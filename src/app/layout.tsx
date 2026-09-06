@@ -1,14 +1,20 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Newsreader, Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const newsreader = Newsreader({
+  variable: "--font-newsreader",
+  subsets: ["latin"],
+  style: ["normal", "italic"],
+});
+
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-mono",
   subsets: ["latin"],
 });
 
@@ -39,12 +45,6 @@ export const metadata: Metadata = {
     locale: "ko_KR",
     type: "website",
   },
-  twitter: {
-    card: "summary_large_image",
-    title: "Taco Studio | 엔터프라이즈 AI & 소프트웨어 FDE",
-    description:
-      "외부 클라우드 차단 기업을 위한 온프레미스 AI 인프라 구축 및 맞춤형 개발 스튜디오.",
-  },
 };
 
 export default function RootLayout({
@@ -55,9 +55,9 @@ export default function RootLayout({
   return (
     <html
       lang="ko"
-      className={`${geistSans.variable} ${geistMono.variable} dark antialiased scroll-smooth`}
+      className={`${newsreader.variable} ${inter.variable} ${jetbrainsMono.variable} dark antialiased scroll-smooth`}
     >
-      <body className="min-h-screen flex flex-col bg-[#08090c] text-slate-100 selection:bg-slate-800 selection:text-white">
+      <body className="min-h-screen flex flex-col bg-neutral-950 text-neutral-100 selection:bg-neutral-800 selection:text-white">
         {children}
       </body>
     </html>
