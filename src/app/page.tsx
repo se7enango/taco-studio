@@ -86,21 +86,36 @@ export default function Home() {
         </div>
       </header>
 
-      {/* Editorial Hero */}
-      <section className="pt-24 pb-20 px-6 max-w-4xl mx-auto space-y-8">
-        <div className="text-xs uppercase tracking-widest text-neutral-400 font-mono">
-          Foundry &amp; Deployment / 2026
+      {/* Hero: First Viewport Screen (Only the two headline lines) */}
+      <section className="min-h-[calc(100vh-4rem)] flex flex-col justify-between px-6 max-w-5xl mx-auto py-12">
+        <div className="pt-4">
+          <div className="text-xs uppercase tracking-widest text-neutral-500 font-mono">
+            Foundry &amp; Deployment / 2026
+          </div>
         </div>
-        <h1 className="font-serif text-4xl sm:text-6xl text-white leading-tight font-normal">
-          소프트웨어와 인공지능을 가장 정직하고 확실하게 만듭니다.
-        </h1>
-        <p className="text-lg text-neutral-300 leading-relaxed max-w-2xl">
+
+        <div className="my-auto py-12">
+          <h1 className="font-serif text-3xl sm:text-5xl md:text-6xl lg:text-7xl text-white leading-[1.25] font-normal tracking-tight">
+            <span className="block whitespace-nowrap">소프트웨어와 인공지능을</span>
+            <span className="block whitespace-nowrap text-neutral-300 mt-2">가장 정직하고 확실하게 만듭니다.</span>
+          </h1>
+        </div>
+
+        <div className="pb-4 flex items-center space-x-2 text-xs font-mono text-neutral-500 animate-bounce">
+          <span>스크롤하여 본문 읽기</span>
+          <span>&darr;</span>
+        </div>
+      </section>
+
+      {/* Main Body Section (Revealed on Scroll) */}
+      <section className="py-20 px-6 max-w-4xl mx-auto space-y-12 border-t border-neutral-800/80">
+        <p className="text-lg sm:text-xl text-neutral-300 leading-relaxed font-light">
           비싼 GPU 장비를 사놓고 콘솔에 방치하는 기업과, 역량 있는 AI 엔지니어를 구하지 못해 멈춰선 팀을 위해 
           Taco Studio는 고객의 현장으로 직접 들어갑니다.
         </p>
 
         {/* Key Stat Strip */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 pt-10 border-t border-b border-neutral-800 py-6 text-sm">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 pt-8 border-t border-b border-neutral-800 py-6 text-sm">
           <div>
             <div className="font-serif text-2xl text-white">100%</div>
             <div className="text-xs text-neutral-500 mt-0.5 font-mono">Air-Gapped Compliance</div>

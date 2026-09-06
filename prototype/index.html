@@ -703,34 +703,47 @@
       </div>
     </header>
 
-    <!-- Editorial Hero -->
-    <section class="pt-24 pb-20 px-6 max-w-4xl mx-auto space-y-8">
-      <div class="text-xs uppercase tracking-widest text-neutral-400 font-mono">Foundry &amp; Deployment / 2026</div>
-      <h1 class="font-serif text-4xl sm:text-6xl text-white leading-tight font-normal">
-        소프트웨어와 인공지능을 가장 정직하고 확실하게 만듭니다.
-      </h1>
-      <p class="text-lg text-neutral-300 leading-relaxed max-w-2xl">
+    <!-- Editorial Hero (Full Viewport: Only the 2 headline lines) -->
+    <section class="min-h-[calc(100vh-4rem)] flex flex-col justify-between px-6 max-w-5xl mx-auto py-12">
+      <div class="pt-4">
+        <div class="text-xs uppercase tracking-widest text-neutral-500 font-mono">Foundry &amp; Deployment / 2026</div>
+      </div>
+      <div class="my-auto py-12">
+        <h1 class="font-serif text-3xl sm:text-5xl md:text-6xl lg:text-7xl text-white leading-[1.25] font-normal tracking-tight">
+          <span class="block whitespace-nowrap">소프트웨어와 인공지능을</span>
+          <span class="block whitespace-nowrap text-neutral-300 mt-2">가장 정직하고 확실하게 만듭니다.</span>
+        </h1>
+      </div>
+      <div class="pb-4 flex items-center space-x-2 text-xs font-mono text-neutral-500 animate-bounce">
+        <span>스크롤하여 본문 읽기</span>
+        <span>&darr;</span>
+      </div>
+    </section>
+
+    <!-- Main Body Intro (Revealed on Scroll) -->
+    <section class="py-16 px-6 max-w-4xl mx-auto space-y-12 border-t border-neutral-800/80">
+      <p class="text-lg sm:text-xl text-neutral-300 leading-relaxed font-light">
         비싼 GPU 장비를 사놓고 콘솔에 방치하는 기업과, 역량 있는 AI 엔지니어를 구하지 못해 멈춰선 팀을 위해 
         Taco Studio는 고객의 현장으로 직접 들어갑니다.
       </p>
 
       <!-- Key Stat Strip -->
-      <div class="grid grid-cols-2 sm:grid-cols-4 gap-6 pt-10 border-t border-b border-neutral-800 py-6 text-sm">
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-6 pt-8 border-t border-b border-neutral-800 py-6 text-sm">
         <div>
           <div class="font-serif text-2xl text-white">100%</div>
-          <div class="text-xs text-neutral-500 mt-0.5">Air-Gapped Compliance</div>
+          <div class="text-xs text-neutral-500 mt-0.5 font-mono">Air-Gapped Compliance</div>
         </div>
         <div>
           <div class="font-serif text-2xl text-white">14 Days</div>
-          <div class="text-xs text-neutral-500 mt-0.5">Average Turnkey Delivery</div>
+          <div class="text-xs text-neutral-500 mt-0.5 font-mono">Average Turnkey Delivery</div>
         </div>
         <div>
           <div class="font-serif text-2xl text-white">Zero</div>
-          <div class="text-xs text-neutral-500 mt-0.5">Outbound Data Leaks</div>
+          <div class="text-xs text-neutral-500 mt-0.5 font-mono">Outbound Data Leaks</div>
         </div>
         <div>
           <div class="font-serif text-2xl text-white">FDE Model</div>
-          <div class="text-xs text-neutral-500 mt-0.5">Dedicated Hands-on Team</div>
+          <div class="text-xs text-neutral-500 mt-0.5 font-mono">Dedicated Hands-on Team</div>
         </div>
       </div>
     </section>
@@ -848,8 +861,8 @@
 
     function getVariantFromUrl() {
       const params = new URLSearchParams(window.location.search);
-      const v = (params.get('variant') || 'B').toUpperCase();
-      return VARIANTS.some(item => item.key === v) ? v : 'B';
+      const v = (params.get('variant') || 'C').toUpperCase();
+      return VARIANTS.some(item => item.key === v) ? v : 'C';
     }
 
     function setVariant(vKey, pushState = true) {
