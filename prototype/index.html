@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="ko" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Taco Studio Prototype | taco-studio.ai</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#eef2ff',
+              400: '#818cf8',
+              500: '#6366f1',
+              600: '#4f46e5',
+            },
+            dark: {
+              950: '#060709',
+              900: '#0b0d13',
+              850: '#11141d',
+              800: '#181d2a',
+              700: '#262e42',
+            }
+          },
+          fontFamily: {
+            mono: ['JetBrains Mono', 'Fira Code', 'monospace'],
+            sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+            serif: ['Newsreader', 'Georgia', 'serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #060709;
+      color: #f1f5f9;
+      overflow-x: hidden;
+    }
+    .mono-font { font-family: 'JetBrains Mono', monospace; }
+    .glow-cyan {
+      box-shadow: 0 0 50px -10px rgba(6, 182, 212, 0.25);
+    }
+    .glow-indigo {
+      box-shadow: 0 0 60px -15px rgba(99, 102, 241, 0.3);
+    }
+    .grid-bg {
+      background-size: 32px 32px;
+      background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    }
+    .terminal-scrollbar::-webkit-scrollbar {
+      width: 4px;
+    }
+    .terminal-scrollbar::-webkit-scrollbar-thumb {
+      background: #334155;
+      border-radius: 2px;
+    }
+  </style>
+</head>
+<body class="bg-dark-950 text-slate-100 min-h-screen relative pb-28">
+
+  <!-- ========================================================================= -->
+  <!-- VARIANT A: AIR-GAP COMMAND (Palantir / Defense Dark Tech)                 -->
+  <!-- ========================================================================= -->
+  <div id="variant-A" class="variant-view hidden">
+    <!-- Top Telemetry Banner -->
+    <header class="border-b border-emerald-500/20 bg-dark-900/90 backdrop-blur sticky top-0 z-40">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between mono-font text-xs">
+        <div class="flex items-center space-x-3">
+          <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span class="font-bold text-slate-100 tracking-wider">TACO_STUDIO // PROTOCOL_01</span>
+          <span class="hidden md:inline px-2 py-0.5 rounded bg-emerald-950/60 border border-emerald-500/30 text-emerald-400 font-mono">
+            AIR-GAP CERTIFIED
+          </span>
+        </div>
+        <div class="flex items-center space-x-6 text-slate-400">
+          <div class="hidden sm:flex items-center space-x-2">
+            <span class="text-slate-500">NET_STATUS:</span>
+            <span class="text-emerald-400 font-bold">100% ISOLATED (OFFLINE)</span>
+          </div>
+          <div class="hidden lg:flex items-center space-x-2">
+            <span class="text-slate-500">EXT_PING:</span>
+            <span class="text-slate-200">0.00ms (BLOCKED)</span>
+          </div>
+          <a href="#audit-form" class="px-3 py-1.5 bg-emerald-500 hover:bg-emerald-400 text-dark-950 font-bold rounded transition">
+            DEPLOY FDE TEAM &rarr;
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative pt-12 pb-20 px-4 sm:px-6 max-w-7xl mx-auto grid-bg">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+        <!-- Hero Text -->
+        <div class="lg:col-span-7 space-y-6">
+          <div class="inline-flex items-center space-x-2 px-3 py-1 rounded bg-slate-800/80 border border-slate-700 text-slate-300 mono-font text-xs">
+            <i data-lucide="shield-alert" class="w-3.5 h-3.5 text-emerald-400"></i>
+            <span>보안 1등급 망분리 &middot; 온프레미스 AI 턴키 구축</span>
+          </div>
+          <h1 class="text-3xl sm:text-5xl font-black tracking-tight text-white leading-tight font-mono">
+            사내망 밖으로<br>
+            <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-cyan-300 to-teal-200">
+              단 1바이트도 유출 없는
+            </span><br>
+            엔터프라이즈 AI 어플라이언스.
+          </h1>
+          <p class="text-slate-400 text-base sm:text-lg leading-relaxed max-w-2xl">
+            외부 클라우드 차단 기업을 위한 온프레미스 AI 턴키 솔루션. 
+            하드웨어 스펙 컨설팅부터 사내 폐쇄망 로컬 LLM 셋업, 
+            비개발자 직원이 내일부터 바로 쓰는 사내 AI 웹 포털까지 14일 안에 직접 납품합니다.
+          </p>
+
+          <div class="flex flex-wrap gap-4 pt-2 mono-font">
+            <a href="#audit-form" class="px-6 py-3.5 bg-emerald-500 hover:bg-emerald-400 text-dark-950 font-bold rounded flex items-center space-x-2 transition shadow-lg shadow-emerald-500/20">
+              <i data-lucide="terminal" class="w-4 h-4"></i>
+              <span>보안 감사 및 하드웨어 실사 신청</span>
+            </a>
+            <a href="#hardware-matrix" class="px-6 py-3.5 bg-dark-850 hover:bg-dark-800 border border-slate-700 text-slate-200 font-semibold rounded flex items-center space-x-2 transition">
+              <i data-lucide="cpu" class="w-4 h-4 text-cyan-400"></i>
+              <span>하드웨어 티어 계산기</span>
+            </a>
+          </div>
+
+          <!-- Trust Badges -->
+          <div class="pt-6 border-t border-slate-800/80 grid grid-cols-3 gap-4 text-xs mono-font text-slate-400">
+            <div>
+              <div class="text-white font-bold text-sm">0 External APIs</div>
+              <div class="text-slate-500">완전 오프라인 구동</div>
+            </div>
+            <div>
+              <div class="text-white font-bold text-sm">14-Day Turnkey</div>
+              <div class="text-slate-500">현장 FDE 직접 구축</div>
+            </div>
+            <div>
+              <div class="text-white font-bold text-sm">Hardware Node-Lock</div>
+              <div class="text-slate-500">기기 귀속 소스코드 보안</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Telemetry Simulation Window -->
+        <div class="lg:col-span-5">
+          <div class="rounded-lg border border-emerald-500/30 bg-dark-900/95 overflow-hidden shadow-2xl glow-cyan">
+            <div class="px-4 py-2.5 bg-dark-850 border-b border-slate-800 flex items-center justify-between text-xs mono-font">
+              <div class="flex items-center space-x-2 text-slate-400">
+                <span class="w-2.5 h-2.5 rounded-full bg-red-500/80 inline-block"></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-yellow-500/80 inline-block"></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500/80 inline-block"></span>
+                <span class="ml-2 text-slate-300">taco-vllm-node-01</span>
+              </div>
+              <span class="text-emerald-400 font-mono text-[11px]">ACTIVE // 52.4 tok/s</span>
+            </div>
+            <div class="p-4 mono-font text-xs space-y-3 terminal-scrollbar max-h-96 overflow-y-auto">
+              <div class="text-slate-500">$ taco-cli init --airgap --strict-security</div>
+              <div class="text-emerald-400 font-semibold">[OK] Hardware detected: 2x NVIDIA RTX 4090 (48GB VRAM)</div>
+              <div class="text-slate-300">[OK] Model loaded: Qwen2.5-Coder-32B-Instruct-Q4</div>
+              <div class="text-slate-300">[OK] Vector Database: Qdrant Local Isolated (Air-gapped)</div>
+              <div class="text-slate-300">[OK] Internal Documents: 14,820 PDF &amp; HWP files indexed</div>
+              <div class="p-3 bg-dark-950 rounded border border-slate-800 text-slate-300 space-y-1.5">
+                <div class="text-cyan-400 font-bold">Query: "2025 취업규칙 제14조 출장여비 규정 알려줘"</div>
+                <div class="text-slate-400 text-[11px] leading-relaxed">
+                  &gt; [RAG 매칭 완료: 사규_2025_개정안.pdf (p.42)]<br>
+                  &gt; 답변: 일비 30,000원 및 숙박비 실비(상한 100,000원) 지급 규정입니다.
+                </div>
+              </div>
+              <div class="flex items-center justify-between text-[11px] text-slate-400 pt-2 border-t border-slate-800/80">
+                <span>VRAM Usage: 38.4GB / 48.0GB</span>
+                <span class="text-emerald-400 font-bold">Latency: 28ms</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Hardware Sizing Matrix -->
+    <section id="hardware-matrix" class="py-16 px-4 sm:px-6 max-w-7xl mx-auto border-t border-slate-800">
+      <div class="text-center max-w-3xl mx-auto mb-12 space-y-3">
+        <h2 class="text-xs font-bold text-emerald-400 uppercase tracking-widest mono-font">Hardware Architecture</h2>
+        <p class="text-2xl sm:text-3xl font-bold font-mono text-white">규모별 온프레미스 하드웨어 가이드</p>
+        <p class="text-slate-400 text-sm">고객사 예산에 맞추어 최적의 기기를 추천합니다. 기계값은 고객사가 실구매하고, Taco Studio는 셋업 및 솔루션을 완벽 납품합니다.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mono-font">
+        <!-- Tier S -->
+        <div class="p-6 rounded-lg bg-dark-900 border border-slate-800 hover:border-slate-700 transition">
+          <div class="text-xs text-slate-500 uppercase">Tier S &middot; Startup / Lab</div>
+          <h3 class="text-xl font-bold text-white mt-1">Mac Studio M4 Max</h3>
+          <p class="text-slate-400 text-xs mt-2 leading-relaxed">128GB 통합 메모리로 대형 오픈소스 LLM을 저소음·저전력으로 사내 책상 위에서 즉시 구동.</p>
+          <div class="my-5 p-3 bg-dark-950 rounded border border-slate-800/80 space-y-1 text-xs">
+            <div class="flex justify-between"><span class="text-slate-500">예상 기기값:</span> <span class="text-slate-200">약 600~700만 원대</span></div>
+            <div class="flex justify-between"><span class="text-slate-500">권장 인원:</span> <span class="text-emerald-400">5~30인 팀</span></div>
+            <div class="flex justify-between"><span class="text-slate-500">추천 모델:</span> <span class="text-slate-200">Llama 3.3 70B (Q4)</span></div>
+          </div>
+          <div class="text-xs text-slate-400 mb-4">&bull; 저전력, 별도 서버실 불필요<br>&bull; 소규모 법무·세무·기획팀 전용</div>
+          <a href="#audit-form" class="block text-center py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold rounded">이 스펙으로 상담 &rarr;</a>
+        </div>
+
+        <!-- Tier M -->
+        <div class="p-6 rounded-lg bg-dark-900 border-2 border-emerald-500/50 shadow-lg relative">
+          <div class="absolute -top-3 right-4 px-2 py-0.5 bg-emerald-500 text-dark-950 font-bold text-[10px] uppercase rounded">추천 표준형</div>
+          <div class="text-xs text-emerald-400 uppercase font-bold">Tier M &middot; Mid-Market / Enterprise</div>
+          <h3 class="text-xl font-bold text-white mt-1">Dual RTX 4090 Workstation</h3>
+          <p class="text-slate-400 text-xs mt-2 leading-relaxed">48GB 고속 GDDR6X VRAM 기반 vLLM 서빙. 사내 50~100인 실무 직원이 버벅임 없이 동시 활용.</p>
+          <div class="my-5 p-3 bg-dark-950 rounded border border-slate-800/80 space-y-1 text-xs">
+            <div class="flex justify-between"><span class="text-slate-500">예상 기기값:</span> <span class="text-slate-200">약 1,100~1,400만 원대</span></div>
+            <div class="flex justify-between"><span class="text-slate-500">권장 인원:</span> <span class="text-emerald-400">30~150인 기업</span></div>
+            <div class="flex justify-between"><span class="text-slate-500">추천 모델:</span> <span class="text-slate-200">DeepSeek-R1-32B + RAG</span></div>
+          </div>
+          <div class="text-xs text-slate-400 mb-4">&bull; 실시간 초고속 토큰 출력 (50+ tok/s)<br>&bull; 사규, 도면, 계약서 대용량 RAG 완벽</div>
+          <a href="#audit-form" class="block text-center py-2.5 bg-emerald-500 hover:bg-emerald-400 text-dark-950 text-xs font-bold rounded">이 스펙으로 상담 &rarr;</a>
+        </div>
+
+        <!-- Tier L -->
+        <div class="p-6 rounded-lg bg-dark-900 border border-slate-800 hover:border-slate-700 transition">
+          <div class="text-xs text-slate-500 uppercase">Tier L &middot; Defense / Heavy Gov</div>
+          <h3 class="text-xl font-bold text-white mt-1">Enterprise H100 / L40S Cluster</h3>
+          <p class="text-slate-400 text-xs mt-2 leading-relaxed">전사 수백~수천 명을 위한 전용 랙 서버. 복수 파인튜닝 모델 병렬 서빙 및 고신뢰도 보안 운영.</p>
+          <div class="my-5 p-3 bg-dark-950 rounded border border-slate-800/80 space-y-1 text-xs">
+            <div class="flex justify-between"><span class="text-slate-500">예상 기기값:</span> <span class="text-slate-200">서버 랙 견적 산출</span></div>
+            <div class="flex justify-between"><span class="text-slate-500">권장 인원:</span> <span class="text-emerald-400">전사 수천 명 단위</span></div>
+            <div class="flex justify-between"><span class="text-slate-500">추천 모델:</span> <span class="text-slate-200">70B~405B Full Parameter</span></div>
+          </div>
+          <div class="text-xs text-slate-400 mb-4">&bull; 고밀도 데이터센터 랙 마운트<br>&bull; 24/7 엔터프라이즈 HA 이중화</div>
+          <a href="#audit-form" class="block text-center py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold rounded">서버 랙 도입 문의 &rarr;</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- FDE Protocol Timeline -->
+    <section class="py-16 px-4 sm:px-6 max-w-7xl mx-auto border-t border-slate-800">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-xs font-bold text-emerald-400 uppercase tracking-widest mono-font mb-2">Tactical Execution</h2>
+        <h3 class="text-2xl font-bold font-mono text-white mb-8">14일 턴키 현장 납품 프로토콜</h3>
+        <div class="space-y-6 mono-font">
+          <div class="flex items-start space-x-4 p-4 rounded bg-dark-900 border border-slate-800">
+            <div class="px-2.5 py-1 bg-slate-800 text-emerald-400 font-bold text-xs rounded">T-14</div>
+            <div>
+              <div class="text-sm font-bold text-white">현장 망분리 실사 및 하드웨어 스펙 확정</div>
+              <p class="text-xs text-slate-400 mt-1">고객사 서버실/네트워크 환경 점검, 장비 발주 및 예산 최적화 컨설팅.</p>
+            </div>
+          </div>
+          <div class="flex items-start space-x-4 p-4 rounded bg-dark-900 border border-slate-800">
+            <div class="px-2.5 py-1 bg-slate-800 text-emerald-400 font-bold text-xs rounded">T-09</div>
+            <div>
+              <div class="text-sm font-bold text-white">베어메탈 OS/CUDA/로컬 LLM 클러스터링</div>
+              <p class="text-xs text-slate-400 mt-1">FDE 엔지니어 현장 투입. vLLM 엔진, 오픈소스 최신 LLM 오프라인 빌드 및 속도 튜닝.</p>
+            </div>
+          </div>
+          <div class="flex items-start space-x-4 p-4 rounded bg-dark-900 border border-slate-800">
+            <div class="px-2.5 py-1 bg-slate-800 text-emerald-400 font-bold text-xs rounded">T-04</div>
+            <div>
+              <div class="text-sm font-bold text-white">사내 지식(PDF, 사규, DB) 에어갭 RAG 파이프라인 결합</div>
+              <p class="text-xs text-slate-400 mt-1">비공개 데이터 벡터화 및 비개발자 전용 사내 AI 웹 포털 UI 설치.</p>
+            </div>
+          </div>
+          <div class="flex items-start space-x-4 p-4 rounded bg-dark-900 border border-emerald-500/30">
+            <div class="px-2.5 py-1 bg-emerald-500 text-dark-950 font-bold text-xs rounded">T-00</div>
+            <div>
+              <div class="text-sm font-bold text-emerald-400">보안 인증 완료 및 사내 서비스 런칭</div>
+              <p class="text-xs text-slate-400 mt-1">전 직원 교육, 하드웨어 라이선스 락 적용, 최종 턴키 인수인계 완료.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Audit Request Form -->
+    <section id="audit-form" class="py-16 px-4 sm:px-6 max-w-3xl mx-auto border-t border-slate-800">
+      <div class="p-8 rounded-lg bg-dark-900 border border-slate-800 mono-font">
+        <div class="flex items-center space-x-2 text-emerald-400 text-xs font-bold uppercase mb-2">
+          <i data-lucide="shield-check" class="w-4 h-4"></i>
+          <span>Secure Mission Request</span>
+        </div>
+        <h3 class="text-2xl font-bold text-white mb-2">사내망 온프레미스 AI 구축 및 실사 신청</h3>
+        <p class="text-slate-400 text-xs mb-6">담당 FDE 리드 엔지니어가 24시간 내 유선 또는 현장 방문으로 기술 타당성을 진단합니다.</p>
+        <form class="space-y-4 text-xs" onsubmit="event.preventDefault(); alert('신청이 접수되었습니다. 24시간 이내에 담당 FDE 엔지니어가 연락드립니다.');">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-slate-400 mb-1">기업명 / 기관명 *</label>
+              <input type="text" required placeholder="예: (주)한국제조" class="w-full bg-dark-950 border border-slate-800 rounded p-2.5 text-slate-200 focus:border-emerald-500 outline-none">
+            </div>
+            <div>
+              <label class="block text-slate-400 mb-1">담당자 성함 / 직함 *</label>
+              <input type="text" required placeholder="예: 홍길동 IT보안팀장" class="w-full bg-dark-950 border border-slate-800 rounded p-2.5 text-slate-200 focus:border-emerald-500 outline-none">
+            </div>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-slate-400 mb-1">업무용 연락처 *</label>
+              <input type="tel" required placeholder="010-0000-0000" class="w-full bg-dark-950 border border-slate-800 rounded p-2.5 text-slate-200 focus:border-emerald-500 outline-none">
+            </div>
+            <div>
+              <label class="block text-slate-400 mb-1">회사 이메일 *</label>
+              <input type="email" required placeholder="name@company.com" class="w-full bg-dark-950 border border-slate-800 rounded p-2.5 text-slate-200 focus:border-emerald-500 outline-none">
+            </div>
+          </div>
+          <div>
+            <label class="block text-slate-400 mb-1">사내 인프라 및 희망 사항</label>
+            <textarea rows="3" placeholder="예: 외부망 차단 폐쇄망 환경입니다. 사내 규정집 약 5,000건 검색용 사내 챗봇 도입을 희망하며 GPU 장비 추천이 필요합니다." class="w-full bg-dark-950 border border-slate-800 rounded p-2.5 text-slate-200 focus:border-emerald-500 outline-none"></textarea>
+          </div>
+          <button type="submit" class="w-full py-3 bg-emerald-500 hover:bg-emerald-400 text-dark-950 font-bold text-sm rounded transition">
+            기밀유지협약(NDA) 기반 기술 상담 접수 &rarr;
+          </button>
+        </form>
+      </div>
+    </section>
+  </div>
+
+
+  <!-- ========================================================================= -->
+  <!-- VARIANT B: SLEEK DEV STUDIO (Linear / Vercel Ultra-Modern SaaS)           -->
+  <!-- ========================================================================= -->
+  <div id="variant-B" class="variant-view">
+    <!-- Navbar -->
+    <header class="border-b border-white/10 bg-dark-950/80 backdrop-blur sticky top-0 z-40">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+        <div class="flex items-center space-x-3">
+          <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-brand-600 via-indigo-500 to-cyan-400 flex items-center justify-center font-black text-white text-sm shadow-md">
+            TS
+          </div>
+          <span class="font-extrabold text-lg text-white tracking-tight">TACO STUDIO<span class="text-cyan-400">.AI</span></span>
+        </div>
+        <nav class="hidden md:flex items-center space-x-8 text-sm text-slate-300 font-medium">
+          <a href="#services-b" class="hover:text-white transition">솔루션 &amp; 외주</a>
+          <a href="#comparison-b" class="hover:text-white transition">시장 비교</a>
+          <a href="#pricing-b" class="hover:text-white transition">비용 체계</a>
+          <a href="#contact-b" class="hover:text-white transition">도입 프로세스</a>
+        </nav>
+        <div class="flex items-center space-x-4">
+          <a href="#contact-b" class="px-4 py-2 text-xs sm:text-sm font-semibold text-white bg-brand-600 hover:bg-brand-500 rounded-lg transition shadow-lg shadow-brand-500/25">
+            맞춤 견적 문의하기
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <!-- Hero Section with Two-Track Highlights -->
+    <section class="relative pt-16 pb-24 px-4 sm:px-6 max-w-7xl mx-auto overflow-hidden">
+      <!-- Ambient Glows -->
+      <div class="absolute -top-24 left-1/2 -translate-x-1/2 w-96 h-96 bg-brand-500/20 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="absolute top-48 right-10 w-72 h-72 bg-cyan-500/15 rounded-full blur-3xl pointer-events-none"></div>
+
+      <div class="text-center max-w-3xl mx-auto space-y-6 relative z-10">
+        <div class="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-medium text-slate-300 backdrop-blur">
+          <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+          <span>Forward Deployed Engineering for AI &amp; Software</span>
+        </div>
+
+        <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight text-white leading-tight">
+          사내 보안망을 위한 로컬 AI부터,<br>
+          <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-indigo-300 to-purple-400">
+            고난도 맞춤 소프트웨어 외주까지.
+          </span>
+        </h1>
+
+        <p class="text-base sm:text-xl text-slate-400 leading-relaxed max-w-2xl mx-auto">
+          GPU 장비만 깔아주고 끝내지 않습니다. 비개발자 직원도 내일부터 즉시 쓰는 사내 포털 완성본 납품. 
+          어떤 복잡한 AI 기능과 웹/앱 개발도 FDE 수준의 기술력으로 끝까지 책임집니다.
+        </p>
+
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
+          <a href="#contact-b" class="w-full sm:w-auto px-7 py-3.5 bg-gradient-to-r from-brand-600 to-cyan-500 hover:opacity-95 text-white font-bold rounded-xl shadow-xl shadow-brand-600/30 transition flex items-center justify-center space-x-2">
+            <span>프로젝트 의뢰 및 무료 상담</span>
+            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+          </a>
+          <a href="#services-b" class="w-full sm:w-auto px-7 py-3.5 bg-dark-850 hover:bg-dark-800 border border-white/10 text-slate-200 font-semibold rounded-xl transition flex items-center justify-center space-x-2">
+            <i data-lucide="sparkles" class="w-4 h-4 text-cyan-400"></i>
+            <span>서비스 2대 기둥 보기</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Interactive Mockup: Taco Studio Internal AI Web Portal -->
+      <div class="mt-16 max-w-5xl mx-auto rounded-2xl border border-white/15 bg-dark-900/90 shadow-2xl overflow-hidden backdrop-blur glow-indigo">
+        <div class="px-4 py-3 bg-dark-850 border-b border-white/10 flex items-center justify-between">
+          <div class="flex items-center space-x-2">
+            <div class="w-3 h-3 rounded-full bg-rose-500/70"></div>
+            <div class="w-3 h-3 rounded-full bg-amber-500/70"></div>
+            <div class="w-3 h-3 rounded-full bg-emerald-500/70"></div>
+            <span class="ml-3 text-xs text-slate-400 font-mono">https://ai.internal.taco-studio.local</span>
+          </div>
+          <div class="flex items-center space-x-3 text-xs text-slate-400">
+            <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-medium">폐쇄망 암호화 연결</span>
+            <span>로그인: 김과장 (총무인사팀)</span>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-12 min-h-[380px]">
+          <!-- Sidebar -->
+          <div class="md:col-span-3 bg-dark-950/60 p-4 border-r border-white/5 space-y-4 text-xs">
+            <div class="font-semibold text-slate-400 uppercase tracking-wider text-[11px]">사내 지식 저장소 (RAG)</div>
+            <div class="space-y-1.5">
+              <div class="p-2 rounded bg-brand-500/20 text-brand-300 font-medium flex items-center space-x-2">
+                <i data-lucide="file-text" class="w-3.5 h-3.5"></i>
+                <span class="truncate">2025_인사총무_사규.pdf</span>
+              </div>
+              <div class="p-2 rounded hover:bg-white/5 text-slate-400 flex items-center space-x-2">
+                <i data-lucide="file-spreadsheet" class="w-3.5 h-3.5"></i>
+                <span class="truncate">사내_장비_매뉴얼_v3.pdf</span>
+              </div>
+              <div class="p-2 rounded hover:bg-white/5 text-slate-400 flex items-center space-x-2">
+                <i data-lucide="database" class="w-3.5 h-3.5"></i>
+                <span class="truncate">ERP_재고DB_연동</span>
+              </div>
+            </div>
+
+            <div class="pt-4 border-t border-white/5">
+              <div class="font-semibold text-slate-400 uppercase tracking-wider text-[11px] mb-2">원클릭 실무 템플릿</div>
+              <div class="space-y-1">
+                <button class="w-full text-left px-2 py-1.5 rounded hover:bg-white/5 text-slate-300">📝 주간 보고서 초안</button>
+                <button class="w-full text-left px-2 py-1.5 rounded hover:bg-white/5 text-slate-300">🌐 영문 이메일 번역/작성</button>
+                <button class="w-full text-left px-2 py-1.5 rounded hover:bg-white/5 text-slate-300">⚖️ 계약서 위험조항 검토</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Chat Area -->
+          <div class="md:col-span-9 p-6 flex flex-col justify-between space-y-4">
+            <div class="space-y-4 text-sm">
+              <!-- User Message -->
+              <div class="flex items-start space-x-3 justify-end">
+                <div class="bg-brand-600 text-white px-4 py-2.5 rounded-2xl rounded-tr-sm max-w-lg">
+                  신입사원 수습기간 중 경조사 휴가 규정이 어떻게 되지? 관련 근거 문서도 같이 찾아줘.
+                </div>
+                <div class="w-7 h-7 rounded-full bg-slate-700 flex items-center justify-center text-xs font-bold">김</div>
+              </div>
+
+              <!-- AI Response -->
+              <div class="flex items-start space-x-3">
+                <div class="w-7 h-7 rounded-full bg-gradient-to-tr from-brand-500 to-cyan-400 flex items-center justify-center text-xs font-bold text-white">TS</div>
+                <div class="bg-dark-850 border border-white/10 text-slate-200 px-4 py-3 rounded-2xl rounded-tl-sm max-w-xl space-y-2 text-xs sm:text-sm">
+                  <p><strong>2025년 인사총무 사규 제21조 (경조휴가)</strong>에 의거한 내용입니다:</p>
+                  <ul class="list-disc pl-4 space-y-1 text-slate-300">
+                    <li>수습사원의 경우에도 본인 결혼(5일), 직계존속 상(5일) 등 핵심 경조휴가는 정직원과 동일하게 유급 적용됩니다.</li>
+                    <li>단, 증빙서류(청첩장, 사망진단서 등)는 사내 ERP 양식을 통해 복귀 후 7일 이내 제출해야 합니다.</li>
+                  </ul>
+                  <div class="pt-2 border-t border-white/5 flex items-center space-x-2 text-[11px] text-cyan-400">
+                    <i data-lucide="check-check" class="w-3.5 h-3.5"></i>
+                    <span>인용 근거: [사내문서] 2025_인사총무_사규.pdf (p.18, 제4장 복무규정)</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Input Bar -->
+            <div class="pt-2">
+              <div class="flex items-center space-x-2 bg-dark-950 rounded-xl border border-white/10 p-2">
+                <input type="text" disabled value="사내 문서나 업무에 대해 무엇이든 질문하세요 (사내 보안망 100% 보장)" class="bg-transparent flex-1 px-3 text-xs sm:text-sm text-slate-400 outline-none">
+                <button disabled class="p-2 bg-brand-600 rounded-lg text-white opacity-75">
+                  <i data-lucide="send" class="w-4 h-4"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Services: Two Track Pillars -->
+    <section id="services-b" class="py-20 px-4 sm:px-6 max-w-7xl mx-auto border-t border-white/5">
+      <div class="text-center max-w-2xl mx-auto mb-16 space-y-3">
+        <h2 class="text-xs font-bold text-cyan-400 uppercase tracking-widest">Core Capabilities</h2>
+        <p class="text-3xl sm:text-4xl font-extrabold text-white">Taco Studio의 2대 사업 기둥</p>
+        <p class="text-slate-400 text-sm">인프라 구축이 필요할 때도, 빠른 소프트웨어 외주 개발이 필요할 때도 동일한 엔지니어링 퀄리티를 보장합니다.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <!-- Track 1 Card -->
+        <div class="p-8 rounded-2xl bg-dark-900 border border-white/10 hover:border-brand-500/40 transition duration-300 space-y-6">
+          <div class="w-12 h-12 rounded-xl bg-brand-500/20 border border-brand-500/30 flex items-center justify-center text-brand-400">
+            <i data-lucide="server" class="w-6 h-6"></i>
+          </div>
+          <div>
+            <div class="text-xs font-semibold text-brand-400 uppercase tracking-wider">Track 01</div>
+            <h3 class="text-2xl font-bold text-white mt-1">온프레미스 AI 턴키 솔루션 구축</h3>
+            <p class="text-slate-400 text-sm mt-2 leading-relaxed">
+              사내 데이터 보안 때문에 외부 ChatGPT를 쓸 수 없는 기업을 위한 전용 패키지. 하드웨어 스펙 컨설팅부터 사내 포털 납품까지 원스톱 해결.
+            </p>
+          </div>
+          <div class="space-y-3 pt-2 text-sm text-slate-300">
+            <div class="flex items-start space-x-3">
+              <i data-lucide="check-circle-2" class="w-5 h-5 text-cyan-400 shrink-0 mt-0.5"></i>
+              <span><strong>100% 폐쇄망 보장:</strong> 외부 인터넷 연결 없이 GPU 서버 단독 추론</span>
+            </div>
+            <div class="flex items-start space-x-3">
+              <i data-lucide="check-circle-2" class="w-5 h-5 text-cyan-400 shrink-0 mt-0.5"></i>
+              <span><strong>비개발자용 완성형 포털:</strong> 브라우저로 바로 쓰는 사내 챗봇 + RAG 검색</span>
+            </div>
+            <div class="flex items-start space-x-3">
+              <i data-lucide="check-circle-2" class="w-5 h-5 text-cyan-400 shrink-0 mt-0.5"></i>
+              <span><strong>하드웨어 비용 최적화:</strong> Mac Studio부터 RTX 워크스테이션까지 거품 없는 구매 가이드</span>
+            </div>
+          </div>
+          <a href="#contact-b" class="inline-flex items-center space-x-2 text-sm font-semibold text-cyan-400 hover:text-cyan-300">
+            <span>온프레미스 도입 상담 &rarr;</span>
+          </a>
+        </div>
+
+        <!-- Track 2 Card -->
+        <div class="p-8 rounded-2xl bg-dark-900 border border-white/10 hover:border-cyan-500/40 transition duration-300 space-y-6">
+          <div class="w-12 h-12 rounded-xl bg-cyan-500/20 border border-cyan-500/30 flex items-center justify-center text-cyan-400">
+            <i data-lucide="code-2" class="w-6 h-6"></i>
+          </div>
+          <div>
+            <div class="text-xs font-semibold text-cyan-400 uppercase tracking-wider">Track 02</div>
+            <h3 class="text-2xl font-bold text-white mt-1">맞춤형 AI &amp; 소프트웨어 외주 개발</h3>
+            <p class="text-slate-400 text-sm mt-2 leading-relaxed">
+              사내 전담 AI 개발팀이 없어도 괜찮습니다. 웹, 모바일, 백엔드, AI 에이전트까지 외주 의뢰 시 최고의 완성도로 납품합니다.
+            </p>
+          </div>
+          <div class="space-y-3 pt-2 text-sm text-slate-300">
+            <div class="flex items-start space-x-3">
+              <i data-lucide="check-circle-2" class="w-5 h-5 text-brand-400 shrink-0 mt-0.5"></i>
+              <span><strong>고난도 AI 워크플로우:</strong> 프롬프트 튜닝, 멀티 에이전트, 벡터 DB 파이프라인</span>
+            </div>
+            <div class="flex items-start space-x-3">
+              <i data-lucide="check-circle-2" class="w-5 h-5 text-brand-400 shrink-0 mt-0.5"></i>
+              <span><strong>사내 시스템 딥 연동:</strong> 슬랙/잔디 메신저 봇, ERP, 레거시 DB 원활한 통합</span>
+            </div>
+            <div class="flex items-start space-x-3">
+              <i data-lucide="check-circle-2" class="w-5 h-5 text-brand-400 shrink-0 mt-0.5"></i>
+              <span><strong>완벽한 인수인계:</strong> Docker 컨테이너 패키징, API 문서, 유지보수 가이드 제공</span>
+            </div>
+          </div>
+          <a href="#contact-b" class="inline-flex items-center space-x-2 text-sm font-semibold text-brand-400 hover:text-brand-300">
+            <span>외주 개발 프로젝트 견적 문의 &rarr;</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Comparison Table -->
+    <section id="comparison-b" class="py-20 px-4 sm:px-6 max-w-7xl mx-auto border-t border-white/5">
+      <div class="text-center max-w-2xl mx-auto mb-14 space-y-3">
+        <h2 class="text-xs font-bold text-brand-400 uppercase tracking-widest">Why Taco Studio</h2>
+        <p class="text-3xl font-extrabold text-white">기존 대기업 SI vs 일반 프리랜서 vs Taco Studio</p>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-sm border-collapse">
+          <thead>
+            <tr class="border-b border-white/10 text-slate-400 text-xs uppercase font-semibold">
+              <th class="py-4 px-6">비교 항목</th>
+              <th class="py-4 px-6">대기업 SI</th>
+              <th class="py-4 px-6">일반 외주 / 프리랜서</th>
+              <th class="py-4 px-6 bg-brand-500/10 text-cyan-300 rounded-t-xl">Taco Studio (FDE)</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-white/5 text-slate-300">
+            <tr>
+              <td class="py-4 px-6 font-semibold text-white">도입 기간</td>
+              <td class="py-4 px-6 text-slate-400">4~6개월 이상 (느린 기획)</td>
+              <td class="py-4 px-6 text-slate-400">일정 지연 빈번</td>
+              <td class="py-4 px-6 bg-brand-500/10 font-bold text-emerald-400">2주 ~ 1개월 내 완제품 납품</td>
+            </tr>
+            <tr>
+              <td class="py-4 px-6 font-semibold text-white">비용 구조</td>
+              <td class="py-4 px-6 text-slate-400">수억 원 단위 (막대한 마진)</td>
+              <td class="py-4 px-6 text-slate-400">저렴하나 완성도 보장 불가</td>
+              <td class="py-4 px-6 bg-brand-500/10 font-bold text-white">사전 정찰제 턴키 + 거품 없는 견적</td>
+            </tr>
+            <tr>
+              <td class="py-4 px-6 font-semibold text-white">폐쇄망 &amp; 보안</td>
+              <td class="py-4 px-6 text-slate-400">자체 대형 솔루션 종속</td>
+              <td class="py-4 px-6 text-slate-400">보안망 구축 지식 부족</td>
+              <td class="py-4 px-6 bg-brand-500/10 font-bold text-white">100% 에어갭 &amp; 소스코드 비노출 패키징</td>
+            </tr>
+            <tr>
+              <td class="py-4 px-6 font-semibold text-white">비개발자 사용성</td>
+              <td class="py-4 px-6 text-slate-400">복잡하고 무거운 엔터프라이즈 UI</td>
+              <td class="py-4 px-6 text-slate-400">서버만 띄워주고 끝냄</td>
+              <td class="py-4 px-6 bg-brand-500/10 font-bold text-cyan-300">직관적인 사내 전용 웹 포털 제공</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Pricing Model -->
+    <section id="pricing-b" class="py-20 px-4 sm:px-6 max-w-7xl mx-auto border-t border-white/5">
+      <div class="text-center max-w-2xl mx-auto mb-14 space-y-3">
+        <h2 class="text-xs font-bold text-cyan-400 uppercase tracking-widest">Pricing Structure</h2>
+        <p class="text-3xl font-extrabold text-white">투명하고 예측 가능한 비용 체계</p>
+        <p class="text-slate-400 text-sm">숨겨진 비용 없이 명확한 턴키 구축비와 합리적인 유지보수 모델을 제시합니다.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+        <div class="p-8 rounded-2xl bg-dark-900 border border-white/10 space-y-4">
+          <div class="text-xs font-bold text-brand-400 uppercase">Phase 1 &middot; Turnkey Build</div>
+          <h3 class="text-2xl font-bold text-white">초기 턴키 구축비 (1회 청구)</h3>
+          <p class="text-slate-400 text-sm leading-relaxed">
+            요구사항 분석, 하드웨어 구매 스펙 확정, 사내망 서버 셋업, 전용 웹 포털 커스텀 개발 및 전 직원 교육까지 포함된 1회성 납품 비용.
+          </p>
+          <ul class="text-sm text-slate-300 space-y-2 pt-2">
+            <li class="flex items-center space-x-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i><span>사전 정의된 범위 내 추가금 0원 보장</span></li>
+            <li class="flex items-center space-x-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i><span>하드웨어는 고객사 직접 구매 (노마진 컨설팅)</span></li>
+            <li class="flex items-center space-x-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i><span>기밀유지협약(NDA) 및 지식재산권 보호 계약</span></li>
+          </ul>
+        </div>
+
+        <div class="p-8 rounded-2xl bg-dark-900 border border-white/10 space-y-4">
+          <div class="text-xs font-bold text-cyan-400 uppercase">Phase 2 &middot; Optional SLA</div>
+          <h3 class="text-2xl font-bold text-white">월 유지보수 &amp; 기술 지원 (선택)</h3>
+          <p class="text-slate-400 text-sm leading-relaxed">
+            도입 후 서버 안정성 모니터링, 신규 사내 문서 주기적 인덱싱, 오픈소스 최신 모델 업그레이드 및 장애 발생 시 긴급 복구를 지원합니다.
+          </p>
+          <ul class="text-sm text-slate-300 space-y-2 pt-2">
+            <li class="flex items-center space-x-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i><span>전담 FDE 엔지니어 핫라인 배정</span></li>
+            <li class="flex items-center space-x-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i><span>사내 문서 추가 시 지속적 RAG 튜닝</span></li>
+            <li class="flex items-center space-x-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i><span>의무 약정 없음 (월 단위 계약 및 자유 해지)</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact & Lead Form -->
+    <section id="contact-b" class="py-20 px-4 sm:px-6 max-w-3xl mx-auto border-t border-white/5">
+      <div class="p-8 sm:p-10 rounded-3xl bg-dark-900 border border-white/15 shadow-2xl relative overflow-hidden">
+        <div class="text-center space-y-3 mb-8">
+          <h3 class="text-2xl sm:text-3xl font-extrabold text-white">프로젝트 상담 및 견적 신청</h3>
+          <p class="text-slate-400 text-sm">문의 남겨주시면 24시간 이내에 전담 엔지니어가 직접 회신드립니다.</p>
+        </div>
+
+        <form class="space-y-4" onsubmit="event.preventDefault(); alert('견적 상담 신청이 완료되었습니다! 24시간 이내에 담당 엔지니어가 연락드립니다.');">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-semibold text-slate-300 mb-1.5">회사명 / 소속 *</label>
+              <input type="text" required placeholder="(주)회사명" class="w-full bg-dark-950 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:border-brand-500 outline-none transition">
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-300 mb-1.5">담당자 성함 / 직함 *</label>
+              <input type="text" required placeholder="홍길동 팀장" class="w-full bg-dark-950 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:border-brand-500 outline-none transition">
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-semibold text-slate-300 mb-1.5">연락처 *</label>
+              <input type="tel" required placeholder="010-0000-0000" class="w-full bg-dark-950 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:border-brand-500 outline-none transition">
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-300 mb-1.5">이메일 주소 *</label>
+              <input type="email" required placeholder="contact@company.com" class="w-full bg-dark-950 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:border-brand-500 outline-none transition">
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1.5">문의 유형</label>
+            <select class="w-full bg-dark-950 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:border-brand-500 outline-none transition">
+              <option>사내 폐쇄망 온프레미스 AI 턴키 구축 (하드웨어 추천 포함)</option>
+              <option>맞춤형 AI / 소프트웨어 외주 개발 의뢰</option>
+              <option>사내 문서 RAG 포털 및 챗봇 구축</option>
+              <option>기타 기술 컨설팅 및 제휴</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1.5">프로젝트 내용 및 예상 일정</label>
+            <textarea rows="3" placeholder="예: 직원 50명 규모의 사내 문서 검색 AI 챗봇을 도입하고자 합니다. GPU 장비가 아직 없어서 구매부터 같이 상담받고 싶습니다." class="w-full bg-dark-950 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:border-brand-500 outline-none transition"></textarea>
+          </div>
+
+          <button type="submit" class="w-full py-4 bg-gradient-to-r from-brand-600 to-cyan-500 hover:opacity-95 text-white font-bold text-sm rounded-xl shadow-lg transition">
+            무료 기술 상담 및 견적 요청서 제출
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-white/10 py-10 px-4 text-center text-xs text-slate-500 space-y-2">
+      <div class="font-bold text-slate-400">TACO STUDIO &middot; taco-studio.ai</div>
+      <div>Forward Deployed Engineering Practice for Enterprise AI &amp; Software</div>
+      <div>&copy; 2026 Taco Studio. All rights reserved. 100% Non-Disclosure Guaranteed.</div>
+    </footer>
+  </div>
+
+
+  <!-- ========================================================================= -->
+  <!-- VARIANT C: EXECUTIVE BRIEF (High-End Boutique Consulting)                 -->
+  <!-- ========================================================================= -->
+  <div id="variant-C" class="variant-view hidden font-sans">
+    <!-- Minimal Header -->
+    <header class="border-b border-neutral-800 bg-neutral-950 sticky top-0 z-40">
+      <div class="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
+        <span class="font-serif font-bold text-xl tracking-tight text-white">Taco Studio</span>
+        <div class="flex items-center space-x-6 text-xs text-neutral-400">
+          <a href="#thesis" class="hover:text-white transition">The Thesis</a>
+          <a href="#engagements" class="hover:text-white transition">Engagements</a>
+          <a href="#consult-c" class="px-3 py-1.5 border border-neutral-700 text-white hover:bg-neutral-900 rounded transition">Book Partner</a>
+        </div>
+      </div>
+    </header>
+
+    <!-- Editorial Hero -->
+    <section class="pt-24 pb-20 px-6 max-w-4xl mx-auto space-y-8">
+      <div class="text-xs uppercase tracking-widest text-neutral-400 font-mono">Foundry &amp; Deployment / 2026</div>
+      <h1 class="font-serif text-4xl sm:text-6xl text-white leading-tight font-normal">
+        소프트웨어와 인공지능을 가장 정직하고 확실하게 만듭니다.
+      </h1>
+      <p class="text-lg text-neutral-300 leading-relaxed max-w-2xl">
+        비싼 GPU 장비를 사놓고 콘솔에 방치하는 기업과, 역량 있는 AI 엔지니어를 구하지 못해 멈춰선 팀을 위해 
+        Taco Studio는 고객의 현장으로 직접 들어갑니다.
+      </p>
+
+      <!-- Key Stat Strip -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-6 pt-10 border-t border-b border-neutral-800 py-6 text-sm">
+        <div>
+          <div class="font-serif text-2xl text-white">100%</div>
+          <div class="text-xs text-neutral-500 mt-0.5">Air-Gapped Compliance</div>
+        </div>
+        <div>
+          <div class="font-serif text-2xl text-white">14 Days</div>
+          <div class="text-xs text-neutral-500 mt-0.5">Average Turnkey Delivery</div>
+        </div>
+        <div>
+          <div class="font-serif text-2xl text-white">Zero</div>
+          <div class="text-xs text-neutral-500 mt-0.5">Outbound Data Leaks</div>
+        </div>
+        <div>
+          <div class="font-serif text-2xl text-white">FDE Model</div>
+          <div class="text-xs text-neutral-500 mt-0.5">Dedicated Hands-on Team</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- The Thesis -->
+    <section id="thesis" class="py-16 px-6 max-w-4xl mx-auto space-y-12">
+      <h2 class="font-serif text-2xl text-white">우리가 해결하는 세 가지 장벽</h2>
+      
+      <div class="space-y-8 text-neutral-300 text-sm leading-relaxed">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-start pb-8 border-b border-neutral-800/80">
+          <div class="md:col-span-3 font-mono text-xs text-neutral-500">01 / PRIVACY TRAP</div>
+          <div class="md:col-span-9 space-y-2">
+            <h3 class="text-base font-bold text-white">클라우드 API의 데이터 유출과 규제 위반</h3>
+            <p>
+              ChatGPT나 Claude API는 편리하지만, 제조 도면, 회계 기밀, 인사 평가, 비공개 소스코드를 보내는 순간 사규와 법령을 위반하게 됩니다. Taco Studio는 인터넷이 전혀 닿지 않는 폐쇄망에서 100% 자립 구동되는 로컬 LLM 환경을 구축합니다.
+            </p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-start pb-8 border-b border-neutral-800/80">
+          <div class="md:col-span-3 font-mono text-xs text-neutral-500">02 / HARDWARE WASTE</div>
+          <div class="md:col-span-9 space-y-2">
+            <h3 class="text-base font-bold text-white">수천만 원대 장비 방치와 비개발자의 소외</h3>
+            <p>
+              엔지니어가 없는 조직에 서버만 갖다 놓으면 아무도 쓰지 못합니다. 우리는 하드웨어 셋업뿐만 아니라, 일반 사원이 브라우저만 열면 사내 문서를 즉시 검색하고 보고서를 쓰는 '완성된 웹 포털'까지 만들어 인계합니다.
+            </p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
+          <div class="md:col-span-3 font-mono text-xs text-neutral-500">03 / TALENT GAP</div>
+          <div class="md:col-span-9 space-y-2">
+            <h3 class="text-base font-bold text-white">억대 연봉 AI 엔지니어 채용의 현실적 한계</h3>
+            <p>
+              AI 팀을 직접 빌딩하려면 채용에만 수개월, 수억 원의 고정비가 듭니다. Taco Studio의 FDE(Forward Deployed Engineer)를 통해 필요한 순간 즉시 최고 수준의 엔지니어링을 프로젝트 단위로 공급받을 수 있습니다.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Selected Engagements -->
+    <section id="engagements" class="py-16 px-6 max-w-4xl mx-auto border-t border-neutral-800">
+      <div class="space-y-6">
+        <h2 class="font-serif text-2xl text-white">Engagement Models</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div class="p-6 bg-neutral-900 border border-neutral-800 rounded-lg space-y-3">
+            <h3 class="font-bold text-white text-base">온프레미스 에어갭 어플라이언스</h3>
+            <p class="text-xs text-neutral-400 leading-relaxed">
+              서버 구매 지원부터 현장 OS/LLM 세팅, 사내 RAG 포털 구축까지 1회성 턴키 납품. 기기 내 컴파일 바이너리 패키징으로 소스코드 유출 없이 안전하게 공급합니다.
+            </p>
+            <div class="pt-2 text-xs font-mono text-neutral-300">소요 기간: 14일 / 고정 견적 계약</div>
+          </div>
+
+          <div class="p-6 bg-neutral-900 border border-neutral-800 rounded-lg space-y-3">
+            <h3 class="font-bold text-white text-base">맞춤형 소프트웨어 &amp; AI 외주 개발</h3>
+            <p class="text-xs text-neutral-400 leading-relaxed">
+              사내 데이터 파이프라인, AI 챗봇 및 업무 자동화 에이전트, 신규 웹/앱 풀스택 개발. 요구사항 명세부터 배포까지 전담 FDE가 직접 구현합니다.
+            </p>
+            <div class="pt-2 text-xs font-mono text-neutral-300">스프린트 기반 납품 / 산출물 100% 인계</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Consultation CTA -->
+    <section id="consult-c" class="py-20 px-6 max-w-2xl mx-auto text-center space-y-6 border-t border-neutral-800">
+      <h2 class="font-serif text-3xl text-white">대표 파트너 직통 기술 미팅</h2>
+      <p class="text-sm text-neutral-400">
+        영업 사원이 아닌 실무 엔지니어가 직접 회사의 인프라와 개발 과제를 검토합니다. 
+        아래 양식으로 남겨주시면 당일 내로 회신드립니다.
+      </p>
+      <form class="space-y-3 text-left max-w-md mx-auto" onsubmit="event.preventDefault(); alert('기술 상담 요청이 전달되었습니다.');">
+        <input type="text" required placeholder="회사명 / 성함 / 직함" class="w-full bg-neutral-900 border border-neutral-800 rounded px-3.5 py-2.5 text-xs text-white outline-none focus:border-neutral-500">
+        <input type="text" required placeholder="이메일 또는 연락처" class="w-full bg-neutral-900 border border-neutral-800 rounded px-3.5 py-2.5 text-xs text-white outline-none focus:border-neutral-500">
+        <textarea rows="3" placeholder="도입을 검토 중인 과제나 프로젝트 개요" class="w-full bg-neutral-900 border border-neutral-800 rounded px-3.5 py-2.5 text-xs text-white outline-none focus:border-neutral-500"></textarea>
+        <button type="submit" class="w-full py-3 bg-white text-neutral-950 font-bold text-xs rounded hover:bg-neutral-200 transition">
+          비공개 기술 미팅 요청
+        </button>
+      </form>
+    </section>
+  </div>
+
+
+  <!-- ========================================================================= -->
+  <!-- FLOATING PROTOTYPE SWITCHER (Bottom-Center Pill)                          -->
+  <!-- Complies strictly with prototype/UI.md                                    -->
+  <!-- ========================================================================= -->
+  <aside id="prototype-switcher" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 flex items-center bg-dark-900/95 border border-white/20 shadow-2xl rounded-full px-3 py-2 backdrop-blur text-xs mono-font select-none">
+    <!-- Prev Button -->
+    <button id="btn-prev-variant" class="p-1.5 text-slate-400 hover:text-white hover:bg-white/10 rounded-full transition" title="이전 시안 (← 키)">
+      <i data-lucide="chevron-left" class="w-4 h-4"></i>
+    </button>
+
+    <!-- Current Variant Pill Display -->
+    <div class="px-4 py-1 flex items-center space-x-2 border-x border-white/10 mx-1">
+      <span id="variant-indicator" class="w-2 h-2 rounded-full bg-cyan-400"></span>
+      <span class="text-slate-400 text-[11px]">Variant:</span>
+      <span id="variant-label" class="font-bold text-white tracking-wide">B — Sleek Dev Studio</span>
+    </div>
+
+    <!-- Next Button -->
+    <button id="btn-next-variant" class="p-1.5 text-slate-400 hover:text-white hover:bg-white/10 rounded-full transition" title="다음 시안 (→ 키)">
+      <i data-lucide="chevron-right" class="w-4 h-4"></i>
+    </button>
+  </aside>
+
+  <!-- Prototype Logic Script -->
+  <script>
+    const VARIANTS = [
+      { key: 'A', name: 'Air-Gap Command (보안/방산 다크테크)' },
+      { key: 'B', name: 'Sleek Dev Studio (모던 SaaS & 2-Track)' },
+      { key: 'C', name: 'Executive Brief (하이엔드 부티크 컨설팅)' }
+    ];
+
+    function getVariantFromUrl() {
+      const params = new URLSearchParams(window.location.search);
+      const v = (params.get('variant') || 'B').toUpperCase();
+      return VARIANTS.some(item => item.key === v) ? v : 'B';
+    }
+
+    function setVariant(vKey, pushState = true) {
+      const match = VARIANTS.find(item => item.key === vKey) || VARIANTS[1];
+      
+      // Update DOM visibility
+      document.querySelectorAll('.variant-view').forEach(el => el.classList.add('hidden'));
+      const activeEl = document.getElementById('variant-' + match.key);
+      if (activeEl) activeEl.classList.remove('hidden');
+
+      // Update Switcher Label
+      document.getElementById('variant-label').textContent = `${match.key} — ${match.name}`;
+      
+      const indicator = document.getElementById('variant-indicator');
+      if (match.key === 'A') indicator.className = 'w-2 h-2 rounded-full bg-emerald-400';
+      else if (match.key === 'B') indicator.className = 'w-2 h-2 rounded-full bg-cyan-400';
+      else indicator.className = 'w-2 h-2 rounded-full bg-slate-300';
+
+      // Update URL
+      if (pushState) {
+        const url = new URL(window.location);
+        url.searchParams.set('variant', match.key);
+        window.history.replaceState({}, '', url);
+      }
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function cycleVariant(direction) {
+      const current = getVariantFromUrl();
+      const currentIndex = VARIANTS.findIndex(item => item.key === current);
+      let nextIndex = (currentIndex + direction + VARIANTS.length) % VARIANTS.length;
+      setVariant(VARIANTS[nextIndex].key);
+    }
+
+    document.getElementById('btn-prev-variant').addEventListener('click', () => cycleVariant(-1));
+    document.getElementById('btn-next-variant').addEventListener('click', () => cycleVariant(1));
+
+    // Keyboard Shortcuts (Arrow Left / Right)
+    window.addEventListener('keydown', (e) => {
+      const activeTag = document.activeElement ? document.activeElement.tagName.toLowerCase() : '';
+      if (activeTag === 'input' || activeTag === 'textarea' || document.activeElement.isContentEditable) {
+        return; // do not hijack when typing
+      }
+      if (e.key === 'ArrowLeft') {
+        cycleVariant(-1);
+      } else if (e.key === 'ArrowRight') {
+        cycleVariant(1);
+      }
+    });
+
+    // Initialize on load
+    window.addEventListener('DOMContentLoaded', () => {
+      lucide.createIcons();
+      setVariant(getVariantFromUrl(), false);
+    });
+  </script>
+</body>
+</html>
