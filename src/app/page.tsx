@@ -97,7 +97,7 @@ export default function Home() {
         <div className="my-auto py-12">
           <h1 className="font-serif text-3xl sm:text-5xl md:text-6xl lg:text-7xl text-white leading-[1.25] font-normal tracking-tight">
             <span className="block whitespace-nowrap">소프트웨어와 인공지능을</span>
-            <span className="block whitespace-nowrap text-neutral-300 mt-2">가장 정직하고 확실하게 만듭니다.</span>
+            <span className="block whitespace-nowrap text-neutral-300 mt-2">정직하고 확실하게 만듭니다.</span>
           </h1>
         </div>
 
