@@ -65,20 +65,20 @@ export default function Home() {
     <div className="bg-neutral-950 text-neutral-100 min-h-screen font-sans">
       {/* Minimal Header */}
       <header className="border-b border-neutral-800 bg-neutral-950/90 backdrop-blur sticky top-0 z-40">
-        <div className="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
-          <a href="#" className="font-serif font-bold text-xl tracking-tight text-white hover:opacity-90 transition">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+          <a href="#" className="font-serif font-bold text-lg sm:text-xl tracking-tight text-white whitespace-nowrap hover:opacity-90 transition">
             Taco Studio
           </a>
-          <div className="flex items-center space-x-6 text-xs text-neutral-400 font-medium">
-            <a href="#thesis" className="hover:text-white transition">
+          <div className="flex items-center space-x-4 sm:space-x-6 text-xs text-neutral-400 font-medium">
+            <a href="#thesis" className="hidden sm:inline hover:text-white transition">
               The Thesis
             </a>
-            <a href="#engagements" className="hover:text-white transition">
+            <a href="#engagements" className="hidden sm:inline hover:text-white transition">
               Engagements
             </a>
             <a
               href="#consult-c"
-              className="px-3 py-1.5 border border-neutral-700 text-white hover:bg-neutral-900 rounded transition"
+              className="px-3 py-1.5 border border-neutral-700 text-white hover:bg-neutral-900 rounded transition whitespace-nowrap"
             >
               Book Partner
             </a>
@@ -95,7 +95,7 @@ export default function Home() {
         </div>
 
         <div className="my-auto py-12">
-          <h1 className="font-serif text-3xl sm:text-5xl md:text-6xl lg:text-7xl text-white leading-[1.25] font-normal tracking-tight">
+          <h1 className="font-serif text-[19px] min-[370px]:text-[20px] min-[400px]:text-[23px] sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl text-white leading-[1.3] font-normal tracking-tight">
             <span className="block whitespace-nowrap">우리는 소프트웨어와 인공지능을</span>
             <span className="block whitespace-nowrap text-neutral-300 mt-2">정직하게 그리고 확실하게 만듭니다.</span>
           </h1>
