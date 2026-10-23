@@ -1,0 +1,129 @@
+/**
+ * 상담 요청 입력값의 정규화와 검증.
+ * 클라이언트(즉시 피드백)와 서버 액션(최종 판단)이 같은 규칙을 공유합니다. 외부 의존성은 없습니다.
+ */
+
+export const INQUIRY_TYPES = ["onprem", "custom", "undecided"] as const;
+export type InquiryType = (typeof INQUIRY_TYPES)[number];
+
+export const INQUIRY_SOURCES = [
+  "header",
+  "hero",
+  "barriers",
+  "service-onprem",
+  "service-custom",
+  "services-undecided",
+  "process",
+  "faq",
+  "link",
+  "direct",
+] as const;
+export type InquirySource = (typeof INQUIRY_SOURCES)[number];
+
+export const FIELD_LIMITS = {
+  company: 100,
+  name: 50,
+  title: 50,
+  email: 254,
+  phone: 20,
+  message: 2000,
+} as const;
+
+/** 검증 오류를 표시하는 필드. 순서는 화면 순서와 같아야 첫 오류 필드로 포커스가 이동합니다. */
+export const FIELD_ORDER = ["company", "name", "title", "email", "phone", "message", "consent"] as const;
+export type FieldName = (typeof FIELD_ORDER)[number];
+export type FieldErrors = Partial<Record<FieldName, string>>;
+
+export type InquiryInput = {
+  inquiryType: InquiryType;
+  company: string;
+  name: string;
+  title: string;
+  email: string;
+  phone: string;
+  message: string;
+  nda: boolean;
+  consent: boolean;
+  source: InquirySource;
+};
+
+export const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+export const PHONE_PATTERN = /^[0-9+\-() ]{8,20}$/;
+
+/** 사람이 양식을 이 시간보다 빨리 제출하는 경우는 거의 없으므로, 봇으로 간주합니다. */
+export const MIN_ELAPSED_MS = 3000;
+
+const MESSAGES = {
+  companyRequired: "회사명 또는 기관명을 입력해 주세요.",
+  nameRequired: "성함을 입력해 주세요.",
+  emailRequired: "회신받으실 이메일을 입력해 주세요.",
+  emailInvalid: "이메일 주소 형식을 확인해 주세요. 예: name@company.co.kr",
+  phoneInvalid: "연락처는 숫자와 하이픈(-)으로 입력해 주세요.",
+  consentRequired: "개인정보 수집·이용에 동의하셔야 접수할 수 있습니다.",
+  tooLong: (max: number) => `${max.toLocaleString("ko-KR")}자 이내로 입력해 주세요.`,
+};
+
+function oneOf<T extends string>(value: string, allowed: readonly T[], fallback: T): T {
+  return (allowed as readonly string[]).includes(value) ? (value as T) : fallback;
+}
+
+export function toInquiryType(value: unknown): InquiryType {
+  return oneOf(typeof value === "string" ? value : "", INQUIRY_TYPES, "undecided");
+}
+
+export function toInquirySource(value: unknown): InquirySource {
+  return oneOf(typeof value === "string" ? value : "", INQUIRY_SOURCES, "direct");
+}
+
+export function validateInquiry(input: InquiryInput): FieldErrors {
+  const errors: FieldErrors = {};
+
+  if (!input.company) errors.company = MESSAGES.companyRequired;
+  if (!input.name) errors.name = MESSAGES.nameRequired;
+  if (!input.email) errors.email = MESSAGES.emailRequired;
+  else if (!EMAIL_PATTERN.test(input.email)) errors.email = MESSAGES.emailInvalid;
+  if (input.phone && !PHONE_PATTERN.test(input.phone)) errors.phone = MESSAGES.phoneInvalid;
+
+  for (const [field, max] of Object.entries(FIELD_LIMITS) as [keyof typeof FIELD_LIMITS, number][]) {
+    if (!errors[field] && input[field].length > max) errors[field] = MESSAGES.tooLong(max);
+  }
+
+  if (!input.consent) errors.consent = MESSAGES.consentRequired;
+  return errors;
+}
+
+/** FormData 값은 문자열이 아닐 수도 있으므로(File 등) 문자열이 아니면 빈 값으로 취급합니다. */
+function text(formData: FormData, key: string): string {
+  const value = formData.get(key);
+  return typeof value === "string" ? value.trim() : "";
+}
+
+export type ParsedInquiryForm = {
+  input: InquiryInput;
+  honeypot: string;
+  elapsedMs: number;
+};
+
+export function parseInquiryForm(formData: FormData): ParsedInquiryForm {
+  const elapsed = Number(text(formData, "elapsedMs"));
+  return {
+    input: {
+      inquiryType: toInquiryType(text(formData, "inquiryType")),
+      company: text(formData, "company"),
+      name: text(formData, "name"),
+      title: text(formData, "title"),
+      email: text(formData, "email"),
+      phone: text(formData, "phone"),
+      message: text(formData, "message"),
+      nda: text(formData, "nda") === "on",
+      consent: text(formData, "consent") === "on",
+      source: toInquirySource(text(formData, "source")),
+    },
+    honeypot: text(formData, "website"),
+    elapsedMs: Number.isFinite(elapsed) ? elapsed : 0,
+  };
+}
+
+export function hasErrors(errors: FieldErrors): boolean {
+  return Object.keys(errors).length > 0;
+}

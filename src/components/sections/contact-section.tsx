@@ -1,0 +1,78 @@
+import { CONTACT, FORM, SITE } from "@/content/site";
+import { ContactForm } from "@/components/contact/contact-form";
+import { Eyebrow } from "@/components/ui/section";
+
+function Aside() {
+  return (
+    <div className="space-y-8 text-[15px] leading-[1.7] text-ink-body">
+      <div>
+        <h3 className="text-[13px] font-semibold text-ink-muted">{CONTACT.stepsTitle}</h3>
+        <ol className="mt-3 space-y-2">
+          {CONTACT.steps.map((step, i) => (
+            <li key={step} className="flex gap-3">
+              <span aria-hidden="true" className="shrink-0 font-mono text-ink-muted">
+                {i + 1}.
+              </span>
+              <span>{step}</span>
+            </li>
+          ))}
+        </ol>
+      </div>
+      <div>
+        <h3 className="text-[13px] font-semibold text-ink-muted">{CONTACT.reassuranceTitle}</h3>
+        <ul role="list" className="mt-3 space-y-2">
+          {CONTACT.reassurance.map((item) => (
+            <li key={item} className="flex gap-3">
+              <span aria-hidden="true" className="shrink-0 text-ink-muted">
+                —
+              </span>
+              <span>{item}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+      {SITE.contactEmail ? (
+        <p>
+          {CONTACT.emailAlternative}{" "}
+          <a href={`mailto:${SITE.contactEmail}`} className="text-ink underline underline-offset-4">
+            {SITE.contactEmail}
+          </a>
+        </p>
+      ) : null}
+    </div>
+  );
+}
+
+export function ContactSection() {
+  return (
+    <section id="contact" aria-labelledby="contact-title" className="border-t border-line py-20 md:py-28">
+      <span id="consult-c" aria-hidden="true" />
+      <div className="mx-auto grid max-w-5xl gap-y-10 px-5 sm:px-6 md:grid-cols-12 md:grid-rows-[auto_1fr] md:gap-x-10">
+        <div className="md:col-span-5 md:row-start-1">
+          <Eyebrow className="mb-3">{CONTACT.eyebrow}</Eyebrow>
+          <h2
+            id="contact-title"
+            className="font-display text-[clamp(1.625rem,1.2rem+1.6vw,2.25rem)] font-medium leading-[1.35] tracking-[-0.015em] text-ink"
+          >
+            {CONTACT.title}
+          </h2>
+          <p className="mt-5 text-lg leading-[1.7] text-ink-body">{CONTACT.lead}</p>
+        </div>
+
+        <div className="rounded-md border border-line bg-surface p-5 sm:p-6 md:col-span-7 md:col-start-6 md:row-span-2 md:row-start-1 md:self-start md:p-8">
+          <noscript>
+            <p className="mb-6 rounded-sm border border-line p-4 text-sm text-ink-body">
+              {FORM.noscript}
+              {SITE.contactEmail ? ` ${CONTACT.emailAlternative} ${SITE.contactEmail}` : null}
+            </p>
+          </noscript>
+          <ContactForm />
+        </div>
+
+        <div className="md:col-span-5 md:row-start-2">
+          <Aside />
+        </div>
+      </div>
+    </section>
+  );
+}
