@@ -32,6 +32,17 @@
     scroll-padding-top: 5rem;
   }
 
+  /* 섹션은 위 여백이 따로 있으므로, 앵커로 이동하면 섹션 윗선을 머리글 아랫선(휴대폰 56px, md 이상 64px)에 맞춥니다. */
+  section[id] {
+    scroll-margin-top: -1.5rem;
+  }
+
+  @media (width >= 48rem) {
+    section[id] {
+      scroll-margin-top: -1rem;
+    }
+  }
+
   @media (prefers-reduced-motion: no-preference) {
     html {
       scroll-behavior: smooth;

@@ -11,13 +11,13 @@ describe("keepTogether", () => {
   });
 
   test("가운뎃점·빗금 덩어리와 '평균 14일'을 줄바꿈 없는 span으로 감싼다", () => {
-    expect(html("맞춤 소프트웨어·AI 개발")).toBe('맞춤 <span class="whitespace-nowrap">소프트웨어·AI</span> 개발');
-    expect(html("평균 14일 만에 구축")).toBe('<span class="whitespace-nowrap">평균 14일</span> 만에 구축');
-    expect(html("데이터 파이프라인·AI 챗봇·업무 자동화·웹/앱")).toContain('<span class="whitespace-nowrap">파이프라인·AI</span>');
+    expect(html("맞춤 소프트웨어·AI 개발")).toBe('맞춤 <span class="whitespace-nowrap max-[240px]:whitespace-normal">소프트웨어·AI</span> 개발');
+    expect(html("평균 14일 만에 구축")).toBe('<span class="whitespace-nowrap max-[240px]:whitespace-normal">평균 14일</span> 만에 구축');
+    expect(html("데이터 파이프라인·AI 챗봇·업무 자동화·웹/앱")).toContain('<span class="whitespace-nowrap max-[240px]:whitespace-normal">파이프라인·AI</span>');
   });
 
   test("닫는 따옴표·괄호 뒤에 붙은 한글을 떼지 않는다", () => {
-    expect(html("‘확실하게’는 약속")).toContain('<span class="whitespace-nowrap">‘확실하게’는</span>');
+    expect(html("‘확실하게’는 약속")).toContain('<span class="whitespace-nowrap max-[240px]:whitespace-normal">‘확실하게’는</span>');
   });
 
   test("보이는 글자는 원문과 같다", () => {

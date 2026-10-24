@@ -13,7 +13,7 @@ export function Hero() {
 
       {/* 태블릿 이상에서는 두 문장이 한 줄씩 들어가도록 컨테이너 폭에 비례해 크기를 정합니다.
           휴대폰에서는 그렇게 하면 본문과 크기 차이가 거의 없어지므로, 크기를 키우고 각 문장을 두 줄로 나눕니다. */}
-      <div className="@container py-16 md:my-auto md:py-12">
+      <div className="@container py-8 md:my-auto md:py-12">
         <h1
           id="hero-title"
           className="font-display text-[clamp(1.75rem,8.4vw,2.5rem)] font-normal leading-[1.3] tracking-tight text-ink md:text-[min(calc(100cqi/16.4),4.5rem)]"

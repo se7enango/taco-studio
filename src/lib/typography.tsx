@@ -8,7 +8,7 @@ const NUMBER_PHRASE = /((?:평균|약|최대|최소) \d[^\s]*)/;
 
 function nowrap(key: string, text: string) {
   return (
-    <span key={key} className="whitespace-nowrap">
+    <span key={key} className="whitespace-nowrap max-[240px]:whitespace-normal">
       {text}
     </span>
   );
