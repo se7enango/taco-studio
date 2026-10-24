@@ -25,7 +25,7 @@ export function SuccessPanel({ inquiryId, name, email, nda, onReset }: Props) {
 
   return (
     <div role="status" className="space-y-5">
-      <h3 ref={headingRef} tabIndex={-1} className="font-display text-2xl text-ink outline-hidden">
+      <h3 ref={headingRef} tabIndex={-1} className="scroll-mt-12 font-display text-2xl text-ink outline-hidden">
         {FORM.success.title}
       </h3>
       <p className="text-base leading-[1.75] text-ink-body">{FORM.success.body(name, email)}</p>

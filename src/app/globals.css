@@ -85,6 +85,11 @@
   summary::-webkit-details-marker {
     display: none;
   }
+
+  /* Tailwind v4 기본 스타일은 버튼에 손가락 커서를 주지 않습니다. 비활성·처리 중 커서는 유틸리티(disabled:, aria-disabled:)가 덮어씁니다. */
+  button:not(:disabled) {
+    cursor: pointer;
+  }
 }
 
 @media print {
@@ -118,6 +123,11 @@
 
   #top {
     min-height: auto;
+  }
+
+  /* 화면용 위아래 여백(7rem)을 줄여, 섹션 제목이 페이지 끝에 홀로 남는 일을 줄입니다. */
+  main > section:not(#top) {
+    padding-block: 3rem;
   }
 
   /* 접힌 FAQ 답변과 개인정보처리방침도 인쇄합니다. */

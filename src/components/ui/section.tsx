@@ -36,7 +36,7 @@ export function Section({ id, eyebrow, title, lead, aliases = [], children }: Se
       ))}
       <div className="mx-auto max-w-5xl px-5 sm:px-6">
         {/* 라벨과 제목 첫 줄의 글자 바닥선을 맞춥니다. */}
-        <div className="md:grid md:grid-cols-12 md:items-baseline md:gap-x-6">
+        <div className="md:grid md:grid-cols-12 md:items-baseline md:gap-x-6 print:break-inside-avoid print:break-after-avoid">
           <Eyebrow className="mb-3 md:col-span-3 md:mb-0">{eyebrow}</Eyebrow>
           <div className="md:col-span-9">
             <h2

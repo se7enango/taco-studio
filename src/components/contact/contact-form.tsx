@@ -92,7 +92,7 @@ function focusFirstError(errors: FieldErrors) {
 
 /** 어두운 배경에서 기본 체크박스(accent-color)가 회색 사각형으로 보여 비활성처럼 보이므로 직접 그립니다. 고대비 모드에서는 기본 모양으로 돌아갑니다. */
 const checkboxClass =
-  "grid size-5 shrink-0 cursor-pointer appearance-none place-content-center rounded-xs border border-line-strong bg-canvas transition-colors checked:border-ink checked:bg-ink before:size-3 before:scale-0 before:bg-canvas before:transition-transform before:content-[''] before:[clip-path:polygon(14%_44%,0_65%,50%_100%,100%_16%,80%_0%,43%_62%)] checked:before:scale-100 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2 focus-visible:ring-offset-surface aria-invalid:border-danger forced-colors:appearance-auto";
+  "grid size-5 shrink-0 cursor-pointer appearance-none place-content-center rounded-xs border border-line-strong bg-canvas transition-colors checked:border-ink checked:bg-ink before:size-3 before:scale-0 before:bg-canvas before:transition-transform before:content-[''] before:[clip-path:polygon(14%_44%,0_65%,50%_100%,100%_16%,80%_0%,43%_62%)] checked:before:scale-100 group-hover/cb:not-checked:not-aria-invalid:border-ink-muted focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2 focus-visible:ring-offset-surface aria-invalid:border-danger forced-colors:appearance-auto";
 
 /**
  * 상담 요청 양식.
@@ -386,14 +386,14 @@ export function ContactForm() {
       </Field>
 
       <div className="space-y-3">
-        <label className="flex min-h-11 cursor-pointer items-start gap-3 text-[15px] leading-[1.6] text-ink-body">
+        <label className="group/cb flex min-h-11 cursor-pointer items-start gap-3 text-[15px] leading-[1.6] text-ink-body">
           <input type="checkbox" name="nda" className={`mt-0.5 ${checkboxClass}`} />
           <span>{FORM.fields.nda.label}</span>
         </label>
 
         <div>
           <div className="flex flex-wrap items-start justify-between gap-x-4">
-            <label className="flex min-h-11 cursor-pointer items-start gap-3 text-[15px] leading-[1.6] text-ink">
+            <label className="group/cb flex min-h-11 cursor-pointer items-start gap-3 text-[15px] leading-[1.6] text-ink">
               <input
                 {...describedBy("consent", { error: errors.consent })}
                 type="checkbox"

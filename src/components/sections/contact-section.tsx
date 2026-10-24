@@ -44,7 +44,7 @@ export function ContactSection() {
     <section id="contact" aria-labelledby="contact-title" className="border-t border-line py-20 md:py-28">
       <span id="consult-c" aria-hidden="true" />
       <div className="mx-auto grid max-w-5xl gap-y-10 px-5 sm:px-6 lg:grid-cols-12 lg:grid-rows-[auto_1fr] lg:gap-x-10">
-        <div className="lg:col-span-5 lg:row-start-1">
+        <div className="lg:col-span-5 lg:row-start-1 print:break-inside-avoid print:break-after-avoid">
           <Eyebrow className="mb-3">{CONTACT.eyebrow}</Eyebrow>
           <h2
             id="contact-title"

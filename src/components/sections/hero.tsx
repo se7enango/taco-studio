@@ -7,7 +7,7 @@ export function Hero() {
     <section
       id="top"
       aria-labelledby="hero-title"
-      className="mx-auto flex max-w-5xl flex-col justify-between px-5 py-10 sm:px-6 md:min-h-[calc(100svh-4rem)] md:py-14"
+      className="mx-auto flex max-w-5xl flex-col justify-between px-5 py-10 sm:px-6 md:min-h-[min(calc(100svh-4rem),56rem)] md:py-14"
     >
       <p className="text-[13px] font-medium text-ink-muted sm:text-sm">{keepTogether(HERO.label)}</p>
 

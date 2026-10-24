@@ -44,7 +44,7 @@ function PortalMock() {
 
         <div
           aria-hidden="true"
-          className="flex items-center justify-between gap-3 border-t border-line px-4 py-3 text-[14px] text-[#8f8f8f] sm:px-5"
+          className="flex items-center justify-between gap-3 border-t border-line px-4 py-3 text-[14px] text-[#8f8f8f] cursor-default select-none sm:px-5"
         >
           <span>{mock.input}</span>
           <span className="grid size-7 place-items-center rounded-xs border border-line-strong text-ink-muted">
