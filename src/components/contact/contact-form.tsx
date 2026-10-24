@@ -8,6 +8,7 @@ import {
   useTransition,
   type ChangeEvent,
   type InputHTMLAttributes,
+  type KeyboardEvent as ReactKeyboardEvent,
   type SubmitEvent,
 } from "react";
 import { submitInquiry, type SubmitResult } from "@/actions/submit-inquiry";
@@ -33,6 +34,9 @@ import { SuccessPanel } from "./success-panel";
 type Result = SubmitResult | { status: "network" } | { status: "stale"; saved: boolean };
 type Draft = Partial<InquiryInput> & { elapsedMs?: number };
 type TextField = "company" | "name" | "title" | "email" | "phone";
+
+/** 한 줄 입력란에서 휴대폰 키보드의 '다음'(Enter)을 누르면 옮겨 갈 칸. 화면 순서와 같습니다. */
+const NEXT_FIELD: Record<TextField, string> = { company: "name", name: "title", title: "email", email: "phone", phone: "message" };
 
 /** 사이트가 새로 배포되어 이 화면에서 보낼 수 없을 때, 새로고침해도 입력이 남도록 잠시 보관합니다. */
 const DRAFT_KEY = "taco-inquiry-draft";
@@ -189,6 +193,16 @@ export function ContactForm() {
     });
   };
 
+  // 휴대폰 키보드의 '다음' 키는 Enter로 전달되어, 그대로 두면 첫 칸만 채운 양식이 제출됩니다.
+  // 한 줄 입력란에서는 다음 칸으로 옮기고, 제출은 버튼으로만 합니다. 한글 조합 중인 Enter는 건드리지 않습니다.
+  const handleKeyDown = (event: ReactKeyboardEvent<HTMLFormElement>) => {
+    const target = event.target;
+    if (event.key !== "Enter" || event.nativeEvent.isComposing || event.keyCode === 229) return;
+    if (!(target instanceof HTMLInputElement) || !Object.hasOwn(NEXT_FIELD, target.name)) return;
+    event.preventDefault();
+    document.getElementById(fieldId(NEXT_FIELD[target.name as TextField]))?.focus();
+  };
+
   const handleSubmit = (event: SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (isPending || !ready) return;
@@ -290,6 +304,7 @@ export function ContactForm() {
       aria-labelledby="contact-title"
       onSubmit={handleSubmit}
       onChange={handleChange}
+      onKeyDown={handleKeyDown}
       className="space-y-6"
     >
       <p className="text-sm text-ink-muted">{keepTogether(FORM.intro)}</p>
@@ -343,9 +358,11 @@ export function ContactForm() {
         {textInput("title", { type: "text", autoComplete: "organization-title", enterKeyHint: "next" })}
       </div>
 
+      {/* 회신 주소는 보내기 전에 끝까지 확인할 수 있도록 한 줄 전체를 씁니다. 연락처는 성함 칸과 같은 폭입니다. */}
+      {textInput("email", { type: "email", required: true, inputMode: "email", autoComplete: "email", spellCheck: false, enterKeyHint: "next" })}
+
       <div className="grid gap-6 sm:grid-cols-2">
-        {textInput("email", { type: "email", required: true, inputMode: "email", autoComplete: "email", spellCheck: false })}
-        {textInput("phone", { type: "tel", inputMode: "tel", autoComplete: "tel" })}
+        {textInput("phone", { type: "tel", inputMode: "tel", autoComplete: "tel", enterKeyHint: "next" })}
       </div>
 
       <Field
@@ -448,7 +465,8 @@ export function ContactForm() {
       ) : null}
 
       <div className="space-y-3">
-        {/* 스크립트가 준비되기 전에는 비활성화해, 입력 내용이 주소창에 실려 전송되는 일을 막습니다. */}
+        {/* 스크립트가 준비되기 전에는 비활성화합니다. 그 전에 제출되면 서버 액션이 아니라 페이지로 POST되어 문의가 사라집니다.
+            form의 method="post"는 그래도 제출됐을 때 입력 내용이 주소창·방문 기록에 남지 않게 하는 이중 장치입니다. */}
         <button
           type="submit"
           disabled={!ready}
