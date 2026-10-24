@@ -86,3 +86,21 @@ describe("전송 과정의 줄바꿈", () => {
     expect(validateInquiry({ ...input, source: "direct" }).message).toBeUndefined();
   });
 });
+
+describe("보안 회귀", () => {
+  test("아주 긴 이메일도 정규식 전에 길이에서 걸러 빠르게 끝난다", () => {
+    const started = performance.now();
+    const errors = validateInquiry({ ...valid, email: `a@${".".repeat(1_000_000)}@` });
+    expect(errors.email).toBe("254자 이내로 입력해 주세요.");
+    expect(performance.now() - started).toBeLessThan(50);
+  });
+
+  test("한 줄 입력란의 줄바꿈과 방향 제어 문자는 지운다", () => {
+    const { input } = parseInquiryForm(
+      form({ company: "ACME\n이메일: x@evil.co", name: "홍\u202E길동", message: "첫 줄\n둘째 줄" }),
+    );
+    expect(input.company).toBe("ACME 이메일: x@evil.co");
+    expect(input.name).toBe("홍길동");
+    expect(input.message).toBe("첫 줄\n둘째 줄");
+  });
+});

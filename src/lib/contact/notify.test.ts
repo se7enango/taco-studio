@@ -69,3 +69,11 @@ describe("notify", () => {
     expect(await notify(inquiry, [])).toEqual({ attempted: 0, delivered: [], failed: [] });
   });
 });
+
+describe("failureReason", () => {
+  test("주소 해석 오류에 담긴 웹훅 주소를 기록하지 않는다", async () => {
+    const result = await notify(inquiry, [channel("slack", '"https://hooks.slack.com/services/T0/B0/SECRET"')]);
+    expect(result.failed[0].reason).toBe("TypeError");
+    expect(JSON.stringify(result)).not.toContain("SECRET");
+  });
+});

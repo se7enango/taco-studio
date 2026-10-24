@@ -32,13 +32,25 @@ async function send(channel: Channel, inquiry: Inquiry): Promise<void> {
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
 }
 
+/**
+ * 로그에 남길 실패 사유. fetch는 주소를 해석하지 못하면 오류 메시지에 웹훅 주소(비밀값)를 그대로 담으므로
+ * 메시지를 그대로 기록하지 않습니다.
+ */
+export function failureReason(error: unknown): string {
+  if (!(error instanceof Error)) return "unknown";
+  if (error.message.startsWith("HTTP ")) return error.message;
+  if (error.name === "TimeoutError" || error.name === "AbortError") return "timeout";
+  const code = (error.cause as { code?: unknown } | undefined)?.code;
+  return typeof code === "string" ? `${error.name} ${code}` : error.name;
+}
+
 export async function notify(inquiry: Inquiry, channels: Channel[] = configuredChannels()): Promise<NotifyResult> {
   const results = await Promise.allSettled(channels.map((channel) => send(channel, inquiry)));
   const result: NotifyResult = { attempted: channels.length, delivered: [], failed: [] };
   results.forEach((outcome, i) => {
     const channel = channels[i].name;
     if (outcome.status === "fulfilled") result.delivered.push(channel);
-    else result.failed.push({ channel, reason: outcome.reason instanceof Error ? outcome.reason.message : String(outcome.reason) });
+    else result.failed.push({ channel, reason: failureReason(outcome.reason) });
   });
   return result;
 }

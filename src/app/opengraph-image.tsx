@@ -13,12 +13,17 @@ const FOOTNOTE = `${SITE.name} · ${SITE.tagline}`;
  */
 async function loadKoreanFont(text: string): Promise<ArrayBuffer | null> {
   try {
-    const css = await fetch(
+    // 응답이 없어도 빌드가 멈추지 않도록 시간 제한을 둡니다.
+    const signal = AbortSignal.timeout(10_000);
+    const cssRes = await fetch(
       `https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400&text=${encodeURIComponent(text)}`,
-    ).then((res) => res.text());
-    const url = css.match(/src: url\((.+?)\) format\('(?:opentype|truetype)'\)/)?.[1];
+      { signal },
+    );
+    if (!cssRes.ok) return null;
+    const url = (await cssRes.text()).match(/src: url\((https:\/\/fonts\.gstatic\.com\/.+?)\) format\('(?:opentype|truetype)'\)/)?.[1];
     if (!url) return null;
-    return await fetch(url).then((res) => res.arrayBuffer());
+    const fontRes = await fetch(url, { signal });
+    return fontRes.ok ? await fontRes.arrayBuffer() : null;
   } catch {
     return null;
   }

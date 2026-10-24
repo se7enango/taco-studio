@@ -82,27 +82,34 @@ export function toInquirySource(value: unknown): InquirySource {
 export function validateInquiry(input: InquiryInput): FieldErrors {
   const errors: FieldErrors = {};
 
+  // 길이를 먼저 봅니다. EMAIL_PATTERN은 입력 길이의 제곱에 비례해 느려지므로(1MB면 수 분), 한도 안의 값에만 적용합니다.
+  for (const [field, max] of Object.entries(FIELD_LIMITS) as [keyof typeof FIELD_LIMITS, number][]) {
+    if (input[field].length > max) errors[field] = MESSAGES.tooLong(max);
+  }
+
   if (!input.company) errors.company = MESSAGES.companyRequired;
   if (!input.name) errors.name = MESSAGES.nameRequired;
   if (!input.email) errors.email = MESSAGES.emailRequired;
-  else if (!EMAIL_PATTERN.test(input.email)) errors.email = MESSAGES.emailInvalid;
-  if (input.phone && !PHONE_PATTERN.test(input.phone)) errors.phone = MESSAGES.phoneInvalid;
-
-  for (const [field, max] of Object.entries(FIELD_LIMITS) as [keyof typeof FIELD_LIMITS, number][]) {
-    if (!errors[field] && input[field].length > max) errors[field] = MESSAGES.tooLong(max);
-  }
+  else if (!errors.email && !EMAIL_PATTERN.test(input.email)) errors.email = MESSAGES.emailInvalid;
+  if (input.phone && !errors.phone && !PHONE_PATTERN.test(input.phone)) errors.phone = MESSAGES.phoneInvalid;
 
   if (!input.consent) errors.consent = MESSAGES.consentRequired;
   return errors;
 }
 
+/** 글자 방향을 뒤집어 보이게 하는 제어 문자. 알림에서 이메일·이름을 다르게 보이게 하는 데 쓰일 수 있습니다. */
+const BIDI_CONTROLS = /[\u200E\u200F\u202A-\u202E\u2066-\u2069]/g;
+
 /**
  * FormData 값은 문자열이 아닐 수도 있으므로(File 등) 문자열이 아니면 빈 값으로 취급합니다.
  * 전송 과정에서 줄바꿈이 CRLF로 바뀌므로, 브라우저와 같은 LF로 되돌린 뒤 길이를 셉니다.
+ * 한 줄 입력란(회사·성함 등)은 줄바꿈을 공백으로 바꿔, 알림에 가짜 항목 줄을 끼워 넣지 못하게 합니다.
  */
-function text(formData: FormData, key: string): string {
+function text(formData: FormData, key: string, multiline = false): string {
   const value = formData.get(key);
-  return typeof value === "string" ? value.replace(/\r\n?/g, "\n").trim() : "";
+  if (typeof value !== "string") return "";
+  const clean = value.replace(/\r\n?/g, "\n").replace(BIDI_CONTROLS, "");
+  return (multiline ? clean : clean.replace(/\s+/g, " ")).trim();
 }
 
 export type ParsedInquiryForm = {
@@ -121,7 +128,7 @@ export function parseInquiryForm(formData: FormData): ParsedInquiryForm {
       title: text(formData, "title"),
       email: text(formData, "email"),
       phone: text(formData, "phone"),
-      message: text(formData, "message"),
+      message: text(formData, "message", true),
       nda: text(formData, "nda") === "on",
       consent: text(formData, "consent") === "on",
       source: toInquirySource(text(formData, "source")),
