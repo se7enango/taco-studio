@@ -486,6 +486,14 @@ export const PRIVACY = {
   effectiveDate: undefined as string | undefined,
 };
 
+/** 없는 주소로 들어왔을 때의 안내(404). 제목은 제목용 글꼴 서브셋에 들어갑니다(display-text.ts). */
+export const NOT_FOUND = {
+  title: "페이지를 찾을 수 없습니다",
+  body: "주소가 바뀌었거나 없는 페이지입니다. 첫 화면에서 서비스를 살펴보시거나 바로 상담을 요청해 주세요.",
+  home: "첫 화면으로",
+  contact: "상담 요청",
+};
+
 export const FOOTER = {
   confidentiality: "상담 중 받은 자료는 외부에 공개하지 않습니다.", // OWNER-CONFIRM
   privacyTitle: "개인정보처리방침",

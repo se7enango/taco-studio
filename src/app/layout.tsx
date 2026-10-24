@@ -14,8 +14,9 @@ const notoSansKr = Noto_Sans_KR({
   preload: false,
 });
 
-// 제목용 명조는 제목에 쓰인 글자만 담은 파일(scripts/subset-display-font.ts로 생성)을 먼저 쓰고,
-// 제목을 고쳐 빠진 글자가 생기면 아래 전체 폰트에서 그 글자가 든 조각만 받아 씁니다.
+// 제목용 명조는 제목에 쓰인 글자만 담은 파일(bun run font:subset으로 생성)을 씁니다.
+// 제목 문구를 고치고 다시 만들지 않으면 bun test(src/content/display-text.test.ts)가 빠진 글자를 알려 주고,
+// 그대로 배포되더라도 빠진 글자는 아래 전체 폰트에서 그 글자가 든 조각만 받아 와 같은 글꼴로 보입니다.
 const displaySerif = localFont({
   src: "./fonts/noto-serif-kr-display.woff2",
   variable: "--font-display-serif",
@@ -30,16 +31,20 @@ const notoSerifKr = Noto_Serif_KR({
   preload: false,
 });
 
+// 워드마크(Taco Studio, 600)에만 쓰므로 한 굵기만 받고, 첫 화면 스크립트와 겹치지 않도록 미리 불러오지 않습니다.
 const newsreader = Newsreader({
   variable: "--font-newsreader",
   subsets: ["latin"],
+  weight: "600",
   display: "swap",
+  preload: false,
 });
 
 // 첫 화면에는 모노 글자가 거의 없으므로 미리 불러오지 않습니다.
 const jetbrainsMono = JetBrains_Mono({
   variable: "--font-jetbrains-mono",
   subsets: ["latin"],
+  weight: "400",
   display: "swap",
   preload: false,
 });

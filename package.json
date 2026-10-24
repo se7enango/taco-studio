@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "typecheck": "next typegen && tsc --noEmit",
-    "test": "bun test"
+    "test": "bun test",
+    "font:subset": "bun scripts/subset-display-font.ts"
   },
   "dependencies": {
     "next": "16.4.3",

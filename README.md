@@ -72,7 +72,7 @@ prototype/             과거 디자인 시안 보관용 (빌드와 무관)
 ### 제목 글꼴
 
 제목에 쓰는 한글 명조(Noto Serif KR)는 첫 화면 용량을 줄이려고 제목에 쓰인 글자만 담은 파일(`src/app/fonts/noto-serif-kr-display.woff2`, 약 90KB)을 씁니다.
-제목 문구를 바꾸면 `scripts/subset-display-font.ts` 맨 위의 안내대로 다시 만들어 주세요. 다시 만들지 않아도 빠진 글자는 Google Fonts의 Noto Serif KR로 자동 대체되어 깨지지 않습니다. 글꼴 라이선스는 `src/app/fonts/OFL.txt`(SIL Open Font License)입니다.
+제목 문구를 바꾸면 `scripts/subset-display-font.ts` 맨 위의 안내대로 `bun run font:subset`으로 다시 만들어 주세요. 다시 만들지 않으면 `bun test`(`src/content/display-text.test.ts`)와 CI가 빠진 글자를 알려 주며 실패합니다. 그대로 배포되더라도 빠진 글자는 Google Fonts의 Noto Serif KR에서 그 글자가 든 조각만 받아 와 같은 글꼴로 보이므로 화면이 깨지지는 않습니다. 글꼴 라이선스는 `src/app/fonts/OFL.txt`(SIL Open Font License)입니다.
 
 `prototype/index.html`은 검증되지 않은 시안입니다. 그 안의 가격, 인증, 계약 조건, 수치, 경쟁사 비교는 사실로 확인된 것이 아니므로 실제 사이트로 옮기지 마세요.
 
