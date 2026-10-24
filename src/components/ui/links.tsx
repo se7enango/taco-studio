@@ -1,21 +1,11 @@
 import type { ReactNode } from "react";
-import type { InquirySource, InquiryType } from "@/lib/contact/schema";
+import { ctaAttributes, type CtaIntent } from "@/lib/contact/cta";
 
-type CtaProps = {
+type CtaProps = CtaIntent & {
   href?: string;
-  /** 문의 알림의 '진입 경로'. 클릭하면 문의 양식이 이 값을 기록합니다. */
-  cta?: InquirySource;
-  /** 클릭하면 문의 양식의 '문의 분야'를 이 값으로 바꿉니다. */
-  inquiry?: InquiryType;
-  /** 클릭하면 문의 양식의 'NDA 먼저 체결' 체크박스를 켭니다. */
-  nda?: boolean;
   className?: string;
   children: ReactNode;
 };
-
-function ctaData(cta?: InquirySource, inquiry?: InquiryType, nda?: boolean) {
-  return { "data-cta": cta, "data-inquiry": inquiry, "data-nda": nda ? "true" : undefined };
-}
 
 export function Arrow({ direction = "right" }: { direction?: "right" | "down" }) {
   return (
@@ -41,7 +31,7 @@ export function TextLink({
   return (
     <a
       href={href}
-      {...ctaData(cta, inquiry, nda)}
+      {...ctaAttributes({ cta, inquiry, nda })}
       className={`inline-flex min-h-11 items-center text-[15px] font-medium text-ink underline decoration-line-strong underline-offset-4 transition-colors hover:decoration-ink ${focusRing} rounded-xs ${className}`}
     >
       {/* 줄이 바뀌어도 화살표가 마지막 단어 옆에 붙어 있도록 한 덩어리로 감쌉니다. */}
@@ -69,7 +59,7 @@ export function ButtonLink({
   return (
     <a
       href={href}
-      {...ctaData(cta, inquiry)}
+      {...ctaAttributes({ cta, inquiry })}
       className={`inline-flex h-12 items-center justify-center gap-2 rounded-sm px-6 text-[15px] font-semibold transition-colors ${look} ${focusRing} ${className}`}
     >
       {children}

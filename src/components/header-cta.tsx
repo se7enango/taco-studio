@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { ctaAttributes } from "@/lib/contact/cta";
 
 /**
  * 상단 메뉴의 상담 요청 버튼. 첫 화면을 지나면 흰색 버튼으로 바뀌어 눈에 띄게 됩니다.
@@ -22,7 +23,7 @@ export function HeaderCta({ href }: { href: string }) {
   return (
     <a
       href={href}
-      data-cta="header"
+      {...ctaAttributes({ cta: "header" })}
       className={`inline-flex h-11 items-center whitespace-nowrap rounded-sm px-4 text-sm font-semibold transition-colors outline-hidden focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2 focus-visible:ring-offset-canvas ${
         pastHero
           ? "border border-ink bg-ink text-canvas hover:bg-neutral-300"
