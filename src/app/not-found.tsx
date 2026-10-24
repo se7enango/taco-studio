@@ -31,7 +31,7 @@ export default function NotFound() {
           <p className="mt-5 max-w-[38rem] text-lg leading-[1.7] text-ink-body">
             주소가 바뀌었거나 없는 페이지입니다. 첫 화면에서 서비스를 살펴보시거나 바로 상담을 요청해 주세요.
           </p>
-          <div className="mt-8 flex flex-wrap gap-3">
+          <div data-print="hide" className="mt-8 flex flex-wrap gap-3">
             <ButtonLink href="/">첫 화면으로</ButtonLink>
             <ButtonLink href="/#contact" variant="outline">
               상담 요청

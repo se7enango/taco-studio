@@ -30,25 +30,28 @@ import { keepTogether } from "@/lib/typography";
 import { describedBy, Field, FieldError, fieldId, inputClass } from "./field";
 import { SuccessPanel } from "./success-panel";
 
-type Result = SubmitResult | { status: "network" } | { status: "stale" };
+type Result = SubmitResult | { status: "network" } | { status: "stale"; saved: boolean };
+type Draft = Partial<InquiryInput> & { elapsedMs?: number };
 type TextField = "company" | "name" | "title" | "email" | "phone";
 
 /** 사이트가 새로 배포되어 이 화면에서 보낼 수 없을 때, 새로고침해도 입력이 남도록 잠시 보관합니다. */
 const DRAFT_KEY = "taco-inquiry-draft";
 
-function saveDraft(input: InquiryInput) {
+/** 저장소를 쓸 수 없는 환경(사이트 데이터 차단 등)에서는 false를 돌려줍니다. */
+function saveDraft(draft: Draft): boolean {
   try {
-    sessionStorage.setItem(DRAFT_KEY, JSON.stringify(input));
+    sessionStorage.setItem(DRAFT_KEY, JSON.stringify(draft));
+    return true;
   } catch {
-    // 저장소를 쓸 수 없는 환경(사생활 보호 모드 등)에서는 보관하지 않습니다.
+    return false;
   }
 }
 
-function takeDraft(): Partial<InquiryInput> | null {
+function takeDraft(): Draft | null {
   try {
     const raw = sessionStorage.getItem(DRAFT_KEY);
     sessionStorage.removeItem(DRAFT_KEY);
-    return raw ? (JSON.parse(raw) as Partial<InquiryInput>) : null;
+    return raw ? (JSON.parse(raw) as Draft) : null;
   } catch {
     return null;
   }
@@ -63,7 +66,7 @@ function selectType(form: HTMLFormElement | null, type: InquiryType) {
   if (radio) radio.checked = true;
 }
 
-function restoreDraft(form: HTMLFormElement, draft: Partial<InquiryInput>) {
+function restoreDraft(form: HTMLFormElement, draft: Draft) {
   for (const name of ["company", "name", "title", "email", "phone", "message"] as const) {
     const field = form.elements.namedItem(name);
     const value = draft[name];
@@ -102,6 +105,8 @@ export function ContactForm() {
   const [consentOpen, setConsentOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
   const focusAfterReset = useRef(false);
+  /** 새로고침 전 화면에서 이미 머문 시간. 복원한 입력을 바로 다시 보내도 자동 제출로 의심받지 않게 합니다. */
+  const elapsedBeforeReload = useRef(0);
 
   useEffect(() => {
     const frame = requestAnimationFrame(() => {
@@ -109,7 +114,11 @@ export function ContactForm() {
       if (!form) return;
 
       const draft = takeDraft();
-      if (draft) restoreDraft(form, draft);
+      if (draft) {
+        restoreDraft(form, draft);
+        if (draft.source) setSource(toInquirySource(draft.source));
+        elapsedBeforeReload.current = typeof draft.elapsedMs === "number" ? draft.elapsedMs : 0;
+      }
 
       // 공유 링크(?type=onprem#contact)로 들어오면, 방문자가 이미 고르지 않았을 때만 문의 분야를 골라 둡니다.
       const linked = new URLSearchParams(window.location.search).get("type");
@@ -187,9 +196,10 @@ export function ContactForm() {
       return;
     }
 
-    formData.set("source", source);
     // 페이지를 열기 시작한 시점부터 잰 시간. 자동 제출 의심 여부를 판단하는 데만 씁니다.
-    formData.set("elapsedMs", String(Math.round(performance.now())));
+    const elapsedMs = Math.round(elapsedBeforeReload.current + performance.now());
+    formData.set("source", source);
+    formData.set("elapsedMs", String(elapsedMs));
 
     startTransition(async () => {
       try {
@@ -202,10 +212,12 @@ export function ContactForm() {
         setResult(response);
       } catch (error) {
         if (unstable_isUnrecognizedActionError(error)) {
-          saveDraft(input);
-          setResult({ status: "stale" });
-        } else {
+          setResult({ status: "stale", saved: saveDraft({ ...input, elapsedMs }) });
+        } else if (error instanceof TypeError || !navigator.onLine) {
+          // fetch 자체가 실패한 경우만 연결 문제로 안내합니다. 요청 제한(429)·서버 오류는 일반 실패로 봅니다.
           setResult({ status: "network" });
+        } else {
+          setResult({ status: "failed" });
         }
       }
     });
@@ -240,7 +252,9 @@ export function ContactForm() {
       : result?.status === "network"
         ? FORM.network
         : result?.status === "stale"
-          ? FORM.stale
+          ? result.saved
+            ? FORM.stale
+            : FORM.staleUnsaved
           : null;
 
   const textInput = (name: TextField, extra: InputHTMLAttributes<HTMLInputElement>) => {

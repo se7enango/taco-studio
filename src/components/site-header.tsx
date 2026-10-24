@@ -8,7 +8,7 @@ export function SiteHeader({ base = "" }: { base?: "" | "/" }) {
       <div className="mx-auto flex h-14 max-w-5xl items-center justify-between gap-4 px-5 sm:px-6 md:h-16">
         <a
           href={base || "#top"}
-          aria-label={`${SITE.name} 맨 위로`}
+          aria-label={base ? `${SITE.name} 첫 화면으로` : `${SITE.name} 맨 위로`}
           className="whitespace-nowrap rounded-xs font-serif text-lg font-semibold tracking-tight text-ink outline-hidden focus-visible:ring-2 focus-visible:ring-ink sm:text-xl"
         >
           {SITE.name}

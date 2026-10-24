@@ -49,6 +49,7 @@ export function SuccessPanel({ inquiryId, name, email, nda, onReset }: Props) {
       </div>
       <button
         type="button"
+        data-print="hide"
         onClick={onReset}
         className="inline-flex h-12 items-center justify-center rounded-sm border border-line-strong px-6 text-[15px] font-semibold text-ink transition-colors hover:bg-ink hover:text-canvas outline-hidden focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
       >

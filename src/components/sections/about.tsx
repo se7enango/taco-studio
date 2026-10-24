@@ -9,9 +9,10 @@ export function About() {
         {ABOUT.stats.map((stat) => (
           <div key={stat.term} className="flex flex-col py-6 pr-4">
             <dt className="mt-1 text-sm font-medium text-ink">{stat.term}</dt>
-            <dd className="order-first font-serif text-[1.75rem] leading-tight text-ink sm:text-[2rem]">
+            <dd className="order-first whitespace-nowrap font-serif text-[1.75rem] leading-tight text-ink sm:text-[2rem]">
               {stat.prefix ? <span className="mr-1 font-sans text-base text-ink-muted">{stat.prefix}</span> : null}
               {stat.value}
+              {stat.suffix ? <span className="ml-1 font-sans text-base text-ink-muted">{stat.suffix}</span> : null}
             </dd>
             <dd className="mt-1 text-[13px] leading-snug text-ink-muted">{keepTogether(stat.description)}</dd>
           </div>

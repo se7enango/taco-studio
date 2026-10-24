@@ -28,7 +28,6 @@ import {
   SECURITY,
   SERVICES,
 } from "../src/content/site";
-import { keepTogether } from "../src/lib/typography";
 
 const source = process.argv[2];
 if (!source) {
@@ -51,13 +50,11 @@ const displayText = [
   FAQ.title,
   CONTACT.title,
   FORM.success.title,
-]
-  .map(keepTogether)
-  .join("");
+].join("");
 
 // 제목 안의 영문·숫자·문장부호도 같은 글꼴로 그리도록 기본 라틴 문자를 함께 넣습니다.
 const latin = Array.from({ length: 0x7e - 0x20 + 1 }, (_, i) => String.fromCharCode(0x20 + i)).join("");
-const chars = [...new Set([...displayText, ...latin, "‘", "’", "“", "”", "·", "…", "⁠"])].join("");
+const chars = [...new Set([...displayText, ...latin, "‘", "’", "“", "”", "·", "…"])].join("");
 
 const workdir = mkdtempSync(join(tmpdir(), "subset-"));
 const textFile = join(workdir, "chars.txt");

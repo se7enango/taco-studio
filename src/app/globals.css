@@ -95,6 +95,16 @@
     display: none !important;
   }
 
+  /* 입력 양식은 빼고, 접수 완료 화면(접수 번호)은 인쇄합니다. */
+  [data-print="form-card"]:has(form) {
+    display: none !important;
+  }
+
+  /* 펼침 표시(+/−)는 화면 전용입니다. */
+  summary [aria-hidden="true"] {
+    display: none !important;
+  }
+
   #top {
     min-height: auto;
   }

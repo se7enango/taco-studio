@@ -61,7 +61,7 @@ export function ContactSection() {
         </div>
 
         <div
-          data-print="hide"
+          data-print="form-card"
           className="rounded-md border border-line bg-surface p-5 sm:p-6 md:col-span-7 md:col-start-6 md:row-span-2 md:row-start-1 md:self-start md:p-8">
           <noscript>
             <p className="mb-6 rounded-sm border border-line p-4 text-sm text-ink-body">

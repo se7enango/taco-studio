@@ -112,10 +112,10 @@ export const ABOUT = {
   title: "사내망 안에서 돌아가는 AI를 만들고, 필요한 소프트웨어를 직접 개발합니다.",
   lead: "보안 규정 때문에 외부 AI를 쓸 수 없는 조직, 장비는 갖췄지만 현업에 정착시킬 엔지니어가 없는 조직, 만들고 싶은 것은 분명한데 맡길 개발팀이 없는 조직. Taco Studio는 이런 조직의 현장으로 직접 들어갑니다. 설치로 끝내지 않고, 직원들이 바로 쓸 수 있는 상태로 만들어 넘겨 드립니다.",
   stats: [
-    { prefix: "", value: "100%", term: "폐쇄망 자립 구동", description: "외부 인터넷 연결 없이 사내망 안에서만 동작합니다" },
-    { prefix: DELIVERY.prefix, value: DELIVERY.value, term: "턴키 구축 기간", description: "정확한 일정은 사전 점검 후 견적서에 적어 드립니다" },
-    { prefix: "", value: "고정 견적", term: "온프레미스 구축 계약 방식", description: "확정된 범위 안에서는 금액이 바뀌지 않습니다" },
-    { prefix: "", value: `${REPLY.value} 이내`, term: "엔지니어 직접 회신", description: `${REPLY.basis}이며, 영업 담당자를 거치지 않습니다` },
+    { prefix: "", value: "100%", suffix: "", term: "폐쇄망 자립 구동", description: "외부 인터넷 연결 없이 사내망 안에서만 동작합니다" },
+    { prefix: DELIVERY.prefix, value: DELIVERY.value, suffix: "", term: "턴키 구축 기간", description: "정확한 일정은 사전 점검 후 견적서에 적어 드립니다" },
+    { prefix: "", value: "고정 견적", suffix: "", term: "온프레미스 구축 계약 방식", description: "확정된 범위 안에서는 금액이 바뀌지 않습니다" },
+    { prefix: "", value: REPLY.value, suffix: "이내", term: "엔지니어 직접 회신", description: `${REPLY.basis}이며, 영업 담당자를 거치지 않습니다` },
   ],
 };
 
@@ -494,6 +494,8 @@ export const FORM = {
   failed: "전송하지 못했습니다. 입력하신 내용은 그대로 남아 있으니 잠시 후 다시 시도해 주세요.",
   network: "인터넷 연결이 불안정해 보내지 못했습니다. 연결을 확인한 뒤 다시 시도해 주세요. 입력하신 내용은 그대로 남아 있습니다.",
   stale: "사이트가 방금 업데이트되어 이 화면에서는 보낼 수 없습니다. 새로고침한 뒤 다시 보내 주세요. 입력하신 내용은 새로고침 후에도 그대로 남아 있습니다.",
+  staleUnsaved:
+    "사이트가 방금 업데이트되어 이 화면에서는 보낼 수 없습니다. 이 브라우저에서는 입력 내용을 임시 저장할 수 없으니, 문의 내용을 복사해 둔 뒤 새로고침해 다시 보내 주세요.",
   reload: "새로고침",
   fallbackEmail: (email: string) => `계속 문제가 생기면 ${email}로 보내 주세요.`,
   noscript: "문의 양식을 사용하려면 JavaScript가 필요합니다.",
