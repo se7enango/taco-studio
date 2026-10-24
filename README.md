@@ -52,21 +52,25 @@ bun test             # 단위 테스트 (문의 검증·알림 포맷·전송·�
 ```
 src/
   app/                 레이아웃, 페이지, 404, 메타데이터(OG 이미지·아이콘·robots·sitemap), 전역 스타일, 제목 글꼴
-  actions/             상담 요청 Server Action
+  actions/             상담 요청 Server Action (+ 테스트)
   components/
+    site-header.tsx    상단 메뉴 (header-cta.tsx: 첫 화면을 지나면 바뀌는 상담 요청 버튼)
+    site-footer.tsx    바닥글 (privacy-policy.tsx: 개인정보처리방침)
     sections/          페이지 섹션 (모두 서버 컴포넌트)
     contact/           문의 양식 (클라이언트 컴포넌트)
-    ui/                섹션 틀, 링크·버튼
-  content/site.ts      사이트의 모든 문구와 약속
-  lib/contact/         입력 검증, 알림 메시지 포맷, 웹훅 전송 (+ 테스트)
+    ui/                섹션 틀·제목(section.tsx), 링크·버튼(links.tsx), 기호 아이콘(icons.tsx)
+  content/             site.ts: 사이트 문구와 약속, display-text.ts: 제목 글꼴에 담을 문구 (+ 테스트)
+  lib/contact/         입력 검증, 상담 요청 링크(CTA) 연결, 알림 메시지 포맷, 웹훅 전송 (+ 테스트)
   lib/json-ld.ts       검색 엔진용 구조화 데이터
-scripts/               제목 글꼴 서브셋 생성 스크립트
+  lib/typography.tsx   한글 줄바꿈 보정(keepTogether)
+scripts/               제목 글꼴 서브셋 생성 스크립트 (bun run font:subset)
+.github/workflows/     CI: lint, typecheck, test, build
 prototype/             과거 디자인 시안 보관용 (빌드와 무관)
 ```
 
 ### 문구 수정
 
-화면에 보이는 모든 문구는 `src/content/site.ts` 한 곳에 있습니다. 회신 약속(`REPLY`, 지금은 영업일 기준 24시간 이내)과 구축 기간(`DELIVERY`, 지금은 평균 14일)은 파일 맨 위의 상수 하나만 바꾸면 됩니다.
+화면에 보이는 문구는 `src/content/site.ts`에 있습니다. 예외는 입력 오류 문구(`src/lib/contact/schema.ts`), 알림 항목 이름(`src/lib/contact/format.ts`), 그리고 메뉴 이름표·건너뛰기 링크·동의 안내 항목명처럼 컴포넌트에 붙은 짧은 화면 장치 문구입니다. 회신 약속(`REPLY`, 지금은 영업일 기준 24시간 이내)과 구축 기간(`DELIVERY`, 지금은 평균 14일)은 파일 맨 위의 상수 하나만 바꾸면 됩니다.
 페이지·메타데이터·구조화 데이터·알림 메시지가 모두 이 파일을 읽으므로, 값을 한 번만 바꾸면 사이트 전체에 반영됩니다.
 
 ### 제목 글꼴
