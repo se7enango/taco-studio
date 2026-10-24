@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { DISCORD_CONTENT_LIMIT, formatKst, toDiscordPayload, toSlackPayload, type Inquiry } from "./format";
+import { DISCORD_CONTENT_LIMIT, DISCORD_EMBED_LIMIT, formatKst, toDiscordPayload, toSlackPayload, type Inquiry } from "./format";
 
 const inquiry: Inquiry = {
   id: "abcd1234",
@@ -14,6 +14,7 @@ const inquiry: Inquiry = {
   nda: true,
   consent: true,
   source: "service-custom",
+  elapsedMs: 42_000,
 };
 
 describe("formatKst", () => {
@@ -39,10 +40,11 @@ describe("toDiscordPayload", () => {
   test("멘션을 막고 마크다운을 이스케이프한다", () => {
     const payload = toDiscordPayload(inquiry);
     expect(payload.allowed_mentions).toEqual({ parse: [] });
-    expect(payload.content).toContain("\\*\\*굵게\\*\\*");
+    expect(payload.embeds[0].description).toContain("\\*\\*굵게\\*\\*");
   });
 
-  test("가장 긴 입력에서도 2,000자를 넘지 않는다", () => {
+  test("가장 긴 입력에서도 한도를 넘지 않고, 2,000자 문의 내용을 자르지 않는다", () => {
+    const message = "#".repeat(1999) + "끝";
     const long: Inquiry = {
       ...inquiry,
       company: "*".repeat(100),
@@ -50,8 +52,20 @@ describe("toDiscordPayload", () => {
       title: "~".repeat(50),
       email: `${"a".repeat(240)}@b.co`,
       phone: "0".repeat(20),
-      message: "#".repeat(2000),
+      message,
     };
-    expect(toDiscordPayload(long).content.length).toBeLessThanOrEqual(DISCORD_CONTENT_LIMIT);
+    const payload = toDiscordPayload(long);
+    expect(payload.content.length).toBeLessThanOrEqual(DISCORD_CONTENT_LIMIT);
+    expect(payload.embeds[0].description.length).toBeLessThanOrEqual(DISCORD_EMBED_LIMIT);
+    expect(payload.embeds[0].description.endsWith("끝")).toBe(true);
+  });
+});
+
+describe("자동 제출 의심", () => {
+  test("너무 빨리 제출된 문의는 버리지 않고 확인 필요 표시를 붙인다", () => {
+    const fast = { ...inquiry, elapsedMs: 1200 };
+    expect(toSlackPayload(fast).text).toContain("확인 필요: 페이지를 연 지 1.2초 만에 제출되었습니다");
+    expect(toDiscordPayload(fast).content).toContain("확인 필요");
+    expect(toSlackPayload(inquiry).text).not.toContain("확인 필요");
   });
 });

@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { FORM } from "@/content/site";
+import { keepTogether } from "@/lib/typography";
 
 type Props = {
   inquiryId: string;
@@ -34,7 +35,7 @@ export function SuccessPanel({ inquiryId, name, email, nda, onReset }: Props) {
             <span aria-hidden="true" className="shrink-0 font-mono text-ink-muted">
               {i + 1}.
             </span>
-            <span>{step}</span>
+            <span>{keepTogether(step)}</span>
           </li>
         ))}
       </ol>

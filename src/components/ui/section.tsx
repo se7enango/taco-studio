@@ -1,8 +1,13 @@
 import type { ReactNode } from "react";
+import { keepTogether } from "@/lib/typography";
 
 /** 모노 라벨. 라틴 문자 전용입니다(JetBrains Mono에는 한글 글리프가 없습니다). */
 export function Eyebrow({ children, className = "" }: { children: ReactNode; className?: string }) {
-  return <p className={`font-mono text-xs uppercase tracking-[0.14em] text-ink-muted ${className}`}>{children}</p>;
+  return (
+    <p lang="en" className={`font-mono text-xs uppercase tracking-[0.14em] text-ink-muted ${className}`}>
+      {children}
+    </p>
+  );
 }
 
 /** 섹션 머리 아래의 본문을 오른쪽 9칸(제목 열)에 맞춰 배치합니다. */
@@ -17,8 +22,8 @@ export function Indented({ children, className = "" }: { children: ReactNode; cl
 type SectionProps = {
   id: string;
   eyebrow: string;
-  title: ReactNode;
-  lead?: ReactNode;
+  title: string;
+  lead?: string;
   /** 예전 앵커(#thesis 등)로 들어오는 링크가 계속 동작하도록 남겨 두는 별칭 id */
   aliases?: string[];
   children: ReactNode;
@@ -39,9 +44,9 @@ export function Section({ id, eyebrow, title, lead, aliases = [], children }: Se
               id={titleId}
               className="font-display text-[clamp(1.625rem,1.2rem+1.6vw,2.25rem)] font-medium leading-[1.35] tracking-[-0.015em] text-ink"
             >
-              {title}
+              {keepTogether(title)}
             </h2>
-            {lead ? <p className="mt-5 max-w-[38rem] text-lg leading-[1.7] text-ink-body">{lead}</p> : null}
+            {lead ? <p className="mt-5 max-w-[38rem] text-lg leading-[1.7] text-ink-body">{keepTogether(lead)}</p> : null}
           </div>
         </div>
         {children}

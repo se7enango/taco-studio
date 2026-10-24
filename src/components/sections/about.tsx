@@ -1,5 +1,6 @@
 import { ABOUT } from "@/content/site";
 import { Section } from "@/components/ui/section";
+import { keepTogether } from "@/lib/typography";
 
 export function About() {
   return (
@@ -12,7 +13,7 @@ export function About() {
               {stat.prefix ? <span className="mr-1 font-sans text-base text-ink-muted">{stat.prefix}</span> : null}
               {stat.value}
             </dd>
-            <dd className="mt-1 text-[13px] leading-snug text-ink-muted">{stat.description}</dd>
+            <dd className="mt-1 text-[13px] leading-snug text-ink-muted">{keepTogether(stat.description)}</dd>
           </div>
         ))}
       </dl>

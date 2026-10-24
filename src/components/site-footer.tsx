@@ -1,4 +1,5 @@
 import { FOOTER, SITE } from "@/content/site";
+import { keepTogether } from "@/lib/typography";
 import { PrivacyPolicy } from "./privacy-policy";
 
 export function SiteFooter() {
@@ -11,8 +12,8 @@ export function SiteFooter() {
           <p className="font-serif text-base font-semibold text-ink">
             {SITE.name} <span className="font-normal text-ink-muted">· {SITE.domain}</span>
           </p>
-          <p>{SITE.tagline}</p>
-          <p>{FOOTER.confidentiality}</p>
+          <p>{keepTogether(SITE.tagline)}</p>
+          <p>{keepTogether(FOOTER.confidentiality)}</p>
         </div>
         {business.length > 0 || SITE.contactEmail ? (
           <ul role="list" className="flex flex-wrap gap-x-3 gap-y-1">

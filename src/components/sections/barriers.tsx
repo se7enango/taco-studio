@@ -1,6 +1,7 @@
 import { BARRIERS } from "@/content/site";
 import { TextLink } from "@/components/ui/links";
 import { Eyebrow, Indented, Section } from "@/components/ui/section";
+import { keepTogether } from "@/lib/typography";
 
 export function Barriers() {
   return (
@@ -16,13 +17,13 @@ export function Barriers() {
               <p className="mt-1 text-[13px] font-medium text-ink-muted">{item.label}</p>
             </div>
             <div className="max-w-[38rem] md:col-span-9">
-              <h3 className="text-lg font-semibold leading-normal text-ink md:text-xl">{item.title}</h3>
-              <p className="mt-3 text-base leading-[1.75] text-ink-muted">{item.problem}</p>
+              <h3 className="text-lg font-semibold leading-normal text-ink md:text-xl">{keepTogether(item.title)}</h3>
+              <p className="mt-3 text-base leading-[1.75] text-ink-muted">{keepTogether(item.problem)}</p>
               <p className="mt-3 flex gap-3 text-base leading-[1.75] text-ink-body">
                 <span aria-hidden="true" className="shrink-0 font-mono text-ink-muted">
                   →
                 </span>
-                <span>{item.solution}</span>
+                <span>{keepTogether(item.solution)}</span>
               </p>
             </div>
           </article>
@@ -30,7 +31,7 @@ export function Barriers() {
       </div>
       <Indented className="mt-6">
         <TextLink cta="barriers" inquiry="undecided">
-          {BARRIERS.cta}
+          {keepTogether(BARRIERS.cta)}
         </TextLink>
       </Indented>
     </Section>

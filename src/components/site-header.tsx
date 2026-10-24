@@ -1,12 +1,13 @@
 import { NAV, SITE } from "@/content/site";
 import { HeaderCta } from "./header-cta";
 
-export function SiteHeader() {
+/** base: 첫 화면이 아닌 페이지(404 등)에서는 "/"를 넘겨 첫 화면의 섹션으로 이동하게 합니다. */
+export function SiteHeader({ base = "" }: { base?: "" | "/" }) {
   return (
     <header className="sticky top-0 z-40 border-b border-line bg-canvas/90 backdrop-blur">
       <div className="mx-auto flex h-14 max-w-5xl items-center justify-between gap-4 px-5 sm:px-6 md:h-16">
         <a
-          href="#top"
+          href={base || "#top"}
           aria-label={`${SITE.name} 맨 위로`}
           className="whitespace-nowrap rounded-xs font-serif text-lg font-semibold tracking-tight text-ink outline-hidden focus-visible:ring-2 focus-visible:ring-ink sm:text-xl"
         >
@@ -18,7 +19,7 @@ export function SiteHeader() {
               {NAV.map((item) => (
                 <li key={item.href}>
                   <a
-                    href={item.href}
+                    href={`${base}${item.href}`}
                     className="rounded-xs py-2 transition-colors hover:text-ink outline-hidden focus-visible:text-ink focus-visible:ring-2 focus-visible:ring-ink"
                   >
                     {item.label}
@@ -27,7 +28,7 @@ export function SiteHeader() {
               ))}
             </ul>
           </nav>
-          <HeaderCta />
+          <HeaderCta href={`${base}#contact`} />
         </div>
       </div>
     </header>

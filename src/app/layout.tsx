@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { JetBrains_Mono, Newsreader, Noto_Sans_KR, Noto_Serif_KR } from "next/font/google";
+import localFont from "next/font/local";
 import type { ReactNode } from "react";
 import { META, SITE } from "@/content/site";
 import "./globals.css";
@@ -11,6 +12,15 @@ const notoSansKr = Noto_Sans_KR({
   subsets: ["latin"],
   display: "swap",
   preload: false,
+});
+
+// 제목용 명조는 제목에 쓰인 글자만 담은 파일(scripts/subset-display-font.ts로 생성)을 먼저 쓰고,
+// 제목을 고쳐 빠진 글자가 생기면 아래 전체 폰트에서 그 글자가 든 조각만 받아 씁니다.
+const displaySerif = localFont({
+  src: "./fonts/noto-serif-kr-display.woff2",
+  variable: "--font-display-serif",
+  weight: "400 500",
+  display: "swap",
 });
 
 const notoSerifKr = Noto_Serif_KR({
@@ -26,10 +36,12 @@ const newsreader = Newsreader({
   display: "swap",
 });
 
+// 첫 화면에는 모노 글자가 거의 없으므로 미리 불러오지 않습니다.
 const jetbrainsMono = JetBrains_Mono({
   variable: "--font-jetbrains-mono",
   subsets: ["latin"],
   display: "swap",
+  preload: false,
 });
 
 const verificationOther = SITE.verification.naver ? { "naver-site-verification": SITE.verification.naver } : undefined;
@@ -69,7 +81,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html
       lang="ko"
-      className={`${notoSansKr.variable} ${notoSerifKr.variable} ${newsreader.variable} ${jetbrainsMono.variable}`}
+      className={`${notoSansKr.variable} ${displaySerif.variable} ${notoSerifKr.variable} ${newsreader.variable} ${jetbrainsMono.variable}`}
     >
       <body className="min-h-screen">
         <a

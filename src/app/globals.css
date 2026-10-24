@@ -19,9 +19,9 @@
   /* 본문: 한글 고딕 */
   --font-sans: var(--font-noto-sans-kr), "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
   /* 워드마크와 숫자: 라틴 세리프 우선, 한글은 명조로 대체 */
-  --font-serif: var(--font-newsreader), var(--font-noto-serif-kr), "AppleMyungjo", serif;
+  --font-serif: var(--font-newsreader), var(--font-display-serif), var(--font-noto-serif-kr), "AppleMyungjo", serif;
   /* 한글 제목 */
-  --font-display: var(--font-noto-serif-kr), "AppleMyungjo", serif;
+  --font-display: var(--font-display-serif), var(--font-noto-serif-kr), "AppleMyungjo", serif;
   /* 라틴 전용 라벨 */
   --font-mono: var(--font-jetbrains-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
 }
@@ -87,13 +87,33 @@
     --color-ink-muted: #444;
   }
 
+  /* 인쇄본은 내부 보고(품의)용 자료로 쓰이므로 버튼·양식은 빼고 내용만 남깁니다. */
   header,
-  #contact form,
+  a[data-cta],
+  #top a,
   [data-print="hide"] {
     display: none !important;
   }
 
-  section {
-    break-inside: avoid-page;
+  #top {
+    min-height: auto;
+  }
+
+  /* 접힌 FAQ 답변과 개인정보처리방침도 인쇄합니다. */
+  details::details-content {
+    content-visibility: visible;
+    display: block;
+  }
+
+  article,
+  li,
+  dl > div,
+  figure {
+    break-inside: avoid;
+  }
+
+  h2,
+  h3 {
+    break-after: avoid;
   }
 }

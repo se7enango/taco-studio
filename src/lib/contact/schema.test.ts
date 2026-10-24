@@ -74,3 +74,15 @@ describe("parseInquiryForm", () => {
     expect(honeypot).toBe("spam");
   });
 });
+
+describe("전송 과정의 줄바꿈", () => {
+  test("multipart 전송으로 CRLF가 되어도 화면과 같은 길이로 센다", async () => {
+    const message = Array.from({ length: 40 }, () => "가".repeat(48)).join("\n"); // 1,959자, 줄바꿈 39개
+    expect(message.length).toBeLessThanOrEqual(FIELD_LIMITS.message);
+    const sent = form({ company: "ACME", name: "홍길동", email: "a@b.co.kr", consent: "on", message });
+    const received = await new Request("http://localhost/", { method: "POST", body: sent }).formData();
+    const { input } = parseInquiryForm(received);
+    expect(input.message).toBe(message);
+    expect(validateInquiry({ ...input, source: "direct" }).message).toBeUndefined();
+  });
+});

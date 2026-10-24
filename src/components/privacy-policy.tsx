@@ -1,4 +1,5 @@
 import { FOOTER, PRIVACY, SITE } from "@/content/site";
+import { keepTogether } from "@/lib/typography";
 
 /** 값이 비어 있는 항목은 출력하지 않습니다. */
 function compact<T>(items: (T | false | undefined)[]): T[] {
@@ -35,7 +36,7 @@ export function PrivacyPolicy() {
               {i + 1}. {title}
             </span>
             <br />
-            {body}
+            {keepTogether(body)}
           </li>
         ))}
       </ol>

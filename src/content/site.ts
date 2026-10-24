@@ -5,6 +5,7 @@
  *
  * `// OWNER-CONFIRM` 표시가 붙은 문장은 기존 사이트의 주장을 풀어 쓴 것입니다.
  * 출시 전에 사실인지 확인하고, 사실이 아니면 삭제해 주세요.
+ * 같은 약속이 여러 섹션에 나오므로, 표시만 보지 말고 같은 표현으로도 검색해 주세요.
  */
 
 import type { InquirySource, InquiryType } from "@/lib/contact/schema";
@@ -13,14 +14,22 @@ import type { InquirySource, InquiryType } from "@/lib/contact/schema";
 /* 기본 정보                                                                    */
 /* -------------------------------------------------------------------------- */
 
+/** 회신 약속. 당일 회신을 보장할 수 있다면 여기 값만 바꾸면 사이트 전체에 반영됩니다. */
+export const REPLY = { basis: "영업일 기준", value: "24시간" } as const; // OWNER-CONFIRM
+
+/** 온프레미스 AI 구축 기간. */
+export const DELIVERY = { prefix: "평균", value: "14일" } as const;
+
+/** 맞춤 개발 산출물 인계 범위. 기존 사이트는 '산출물 100% 인계'까지만 말했습니다. */
+const CUSTOM_HANDOVER = "소스코드를 포함한 개발 산출물"; // OWNER-CONFIRM
+
 export const SITE = {
   name: "Taco Studio",
   domain: "taco-studio.ai",
   url: "https://taco-studio.ai",
   tagline: "폐쇄망 온프레미스 AI 구축 · 맞춤 소프트웨어·AI 개발",
-  /** 회신 약속. 당일 회신을 보장할 수 있다면 이 값 하나만 바꾸면 됩니다. */
-  replyPromise: "영업일 기준 24시간 이내", // OWNER-CONFIRM
-  deliveryAvg: "평균 14일",
+  replyPromise: `${REPLY.basis} ${REPLY.value} 이내`,
+  deliveryAvg: `${DELIVERY.prefix} ${DELIVERY.value}`,
   /** 공개 문의 이메일. 값을 넣으면 문의 섹션·오류 안내·JSON-LD에 표시됩니다. */
   contactEmail: undefined as string | undefined,
   /** 사업자 정보. 입력된 항목만 푸터에 표시됩니다. */
@@ -42,7 +51,7 @@ export const HEADLINE = ["우리는 소프트웨어와 인공지능을", "정직
 
 export const META = {
   title: "폐쇄망 온프레미스 AI 구축 · 맞춤 소프트웨어 개발 | Taco Studio",
-  description: `인터넷이 차단된 사내망에서만 동작하는 로컬 LLM과 사내 문서 검색 포털을 ${SITE.deliveryAvg} 만에 구축합니다. 맞춤 소프트웨어·AI 개발은 전담 엔지니어가 직접 맡습니다. 고정 견적 계약, ${SITE.replyPromise} 엔지니어 회신.`,
+  description: `인터넷이 차단된 사내망에서만 동작하는 로컬 LLM과 사내 문서 검색 포털을 고정 견적으로, ${SITE.deliveryAvg} 만에 구축합니다. 맞춤 소프트웨어·AI 개발은 전담 엔지니어가 직접 맡습니다. ${SITE.replyPromise} 엔지니어 회신.`,
   ogDescription: `사내망 안에서만 동작하는 로컬 LLM과 사내 문서 검색 포털을 ${SITE.deliveryAvg} 만에 구축합니다. 고정 견적, 엔지니어 직접 회신.`,
   keywords: [
     "온프레미스 AI",
@@ -104,9 +113,9 @@ export const ABOUT = {
   lead: "보안 규정 때문에 외부 AI를 쓸 수 없는 조직, 장비는 갖췄지만 현업에 정착시킬 엔지니어가 없는 조직, 만들고 싶은 것은 분명한데 맡길 개발팀이 없는 조직. Taco Studio는 이런 조직의 현장으로 직접 들어갑니다. 설치로 끝내지 않고, 직원들이 바로 쓸 수 있는 상태로 만들어 넘겨 드립니다.",
   stats: [
     { prefix: "", value: "100%", term: "폐쇄망 자립 구동", description: "외부 인터넷 연결 없이 사내망 안에서만 동작합니다" },
-    { prefix: "평균", value: "14일", term: "턴키 구축 기간", description: "정확한 일정은 사전 점검 후 견적서에 적어 드립니다" },
+    { prefix: DELIVERY.prefix, value: DELIVERY.value, term: "턴키 구축 기간", description: "정확한 일정은 사전 점검 후 견적서에 적어 드립니다" },
     { prefix: "", value: "고정 견적", term: "온프레미스 구축 계약 방식", description: "확정된 범위 안에서는 금액이 바뀌지 않습니다" },
-    { prefix: "", value: "24시간", term: "엔지니어 직접 회신", description: "영업일 기준이며, 영업 담당자를 거치지 않습니다" }, // OWNER-CONFIRM
+    { prefix: "", value: `${REPLY.value} 이내`, term: "엔지니어 직접 회신", description: `${REPLY.basis}이며, 영업 담당자를 거치지 않습니다` },
   ],
 };
 
@@ -204,12 +213,12 @@ export const SERVICES = {
         "요구사항 명세를 함께 작성하며 시작",
         "스프린트 단위 개발, 스프린트마다 동작하는 결과물 공유",
         "배포까지 전담 FDE가 직접 구현",
-        "소스코드를 포함한 개발 산출물 100% 인계", // OWNER-CONFIRM
+        `${CUSTOM_HANDOVER} 100% 인계`,
       ],
       terms: [
         { term: "기간", value: "범위에 따라 협의 (스프린트 단위)" },
         { term: "계약", value: "스프린트 기반 납품" },
-        { term: "소스코드", value: "포함 (산출물 100% 인계)" }, // OWNER-CONFIRM
+        { term: "소스코드", value: "포함 (산출물 100% 인계)" }, // OWNER-CONFIRM: CUSTOM_HANDOVER와 함께 수정
         { term: "장비", value: "고객사 기존 환경 또는 협의한 환경" },
       ],
       cta: "맞춤 개발 상담 요청",
@@ -223,7 +232,8 @@ export type ProcessStep = {
   title: string;
   body?: string;
   tracks?: { onprem: string; custom: string };
-  badge?: string;
+  /** 온프레미스 트랙 옆에만 붙는 기간 표시 */
+  onpremBadge?: string;
 };
 
 export const PROCESS = {
@@ -250,7 +260,7 @@ export const PROCESS = {
     },
     {
       title: "구축·개발",
-      badge: SITE.deliveryAvg,
+      onpremBadge: SITE.deliveryAvg,
       tracks: {
         onprem: "엔지니어가 현장에 들어가 서버 OS와 로컬 LLM을 설치하고, 사내 문서를 연결한 검색 포털을 구축합니다.",
         custom: "스프린트가 끝날 때마다 동작하는 결과물을 보여 드리고, 받은 의견을 다음 스프린트에 반영합니다.",
@@ -260,19 +270,19 @@ export const PROCESS = {
       title: "인계",
       tracks: {
         onprem: "실제 업무 질문으로 동작을 함께 확인한 뒤, 사용 방법을 안내하고 운영 문서를 넘겨 드립니다.", // OWNER-CONFIRM
-        custom: "배포까지 마무리하고, 소스코드를 포함한 개발 산출물을 100% 인계합니다.",
+        custom: `배포까지 마무리하고, ${CUSTOM_HANDOVER}을 100% 인계합니다.`,
       },
     },
   ] satisfies ProcessStep[],
   // OWNER-CONFIRM: '평균 14일'이 포함하는 기간
-  note: "평균 14일은 현장 구축을 시작한 날부터 포털을 인계하는 날까지의 기간입니다. 장비 조달과 사내 승인 절차에 걸리는 기간은 고객사 일정에 맞춰 따로 잡으며, 연동할 시스템과 문서 규모에 따라 달라질 수 있습니다. 확정 일정은 견적서에 적어 드립니다.",
+  note: `${SITE.deliveryAvg}은 현장 구축을 시작한 날부터 포털을 인계하는 날까지의 기간입니다. 장비 조달과 사내 승인 절차에 걸리는 기간은 고객사 일정에 맞춰 따로 잡으며, 연동할 시스템과 문서 규모에 따라 달라질 수 있습니다. 확정 일정은 견적서에 적어 드립니다.`,
   cta: "상담 요청으로 시작하기",
 };
 
 export const SECURITY = {
   eyebrow: "04 / Security",
   title: "보안 검토를 위한 설명",
-  lead: "보안성 검토에서 자주 확인하시는 항목을 기준으로 정리했습니다.",
+  lead: "폐쇄망 온프레미스 AI 구축을 기준으로, 보안성 검토에서 자주 확인하시는 항목을 정리했습니다.",
   items: [
     {
       term: "외부 통신",
@@ -282,7 +292,7 @@ export const SECURITY = {
     {
       term: "데이터 위치",
       description:
-        "원본 문서와 검색용 색인을 비롯해 시스템이 다루는 데이터는 모두 고객사 장비 안에만 남습니다. Taco Studio로 전송되는 데이터는 없습니다.",
+        "원본 문서와 검색용 색인을 비롯해 시스템이 다루는 데이터는 모두 고객사 장비 안에만 남습니다. 구축한 시스템이 Taco Studio나 외부로 보내는 데이터는 없습니다.",
     },
     {
       term: "반입 방식",
@@ -296,7 +306,7 @@ export const SECURITY = {
     {
       term: "기밀 유지",
       description:
-        "요청하시면 상세 자료를 받기 전에 NDA를 먼저 체결합니다. 고객사의 보안 서약이나 출입 절차가 있으면 그에 맞춰 진행합니다.",
+        "상세 자료는 NDA를 체결한 뒤에 받습니다. 원하시면 첫 상담 전에 먼저 체결할 수 있으며, 고객사의 보안 서약이나 출입 절차가 있으면 그에 맞춰 진행합니다.", // OWNER-CONFIRM
     },
     {
       term: "검토 자료",
@@ -333,10 +343,10 @@ export const COMMITMENTS = {
     {
       heading: "확실하게",
       items: [
-        "구축한 시스템은 외부 인터넷 연결 없이 사내망 안에서만 동작합니다.",
+        "온프레미스 AI로 구축한 시스템은 외부 인터넷 연결 없이 사내망 안에서만 동작합니다.",
         `온프레미스 AI는 설치부터 포털 인계까지 ${SITE.deliveryAvg} 안에 마칩니다.`,
-        "맞춤 개발 산출물은 소스코드를 포함해 100% 인계합니다.",
-        "상세 자료를 받기 전에 NDA를 먼저 체결할 수 있습니다.",
+        `맞춤 개발은 ${CUSTOM_HANDOVER}을 100% 인계합니다.`,
+        "상세 자료는 NDA를 체결한 뒤에 받습니다.", // OWNER-CONFIRM
       ],
     },
   ],
@@ -358,7 +368,7 @@ export const FAQ = {
           defaultOpen: true,
         },
         {
-          question: "‘평균 14일’은 언제부터 언제까지인가요?",
+          question: `‘${SITE.deliveryAvg}’은 언제부터 언제까지인가요?`,
           answer:
             "현장 구축을 시작한 날부터 포털을 인계하는 날까지입니다. 장비 조달, 계약, 사내 보안성 검토 기간은 포함하지 않습니다. 연동할 시스템이 많거나 문서 정리가 먼저 필요하면 더 걸릴 수 있으며, 확정 일정은 사전 점검 후 견적서에 적어 드립니다.", // OWNER-CONFIRM
         },
@@ -370,7 +380,7 @@ export const FAQ = {
         {
           question: "소스코드도 넘겨받을 수 있나요?",
           answer:
-            "서비스에 따라 다릅니다. 온프레미스 AI 구축은 컴파일된 바이너리 형태로 장비에 설치되어 소스코드가 포함되지 않으며, 운영에 필요한 사용 방법과 문서는 인계합니다. 소스코드까지 소유하셔야 하는 과제라면 맞춤 개발로 진행하며, 이때는 소스코드를 포함한 개발 산출물을 100% 인계합니다. 구체적인 인계 항목은 계약서에 명시합니다.",
+            `서비스에 따라 다릅니다. 온프레미스 AI 구축은 컴파일된 바이너리 형태로 장비에 설치되어 소스코드가 포함되지 않으며, 운영에 필요한 사용 방법과 문서는 인계합니다. 소스코드까지 소유하셔야 하는 과제라면 맞춤 개발로 진행하며, 이때는 ${CUSTOM_HANDOVER}을 100% 인계합니다. 구체적인 인계 항목은 계약서에 명시합니다.`, // OWNER-CONFIRM
         },
         {
           question: "납품 후 유지보수는 어떻게 되나요?",
@@ -390,7 +400,7 @@ export const FAQ = {
         {
           question: "ChatGPT 같은 클라우드 AI만큼 성능이 나오나요?",
           answer:
-            "업무에 따라 다릅니다. 사내 장비에서 돌아가는 모델이 모든 작업에서 최신 클라우드 모델과 같은 결과를 내지는 않습니다. 그래서 사전 점검 단계에서 실제 업무 예시를 놓고 무엇이 가능하고 무엇이 어려운지 먼저 말씀드립니다.",
+            "업무에 따라 다릅니다. 사내 장비에서 돌아가는 모델이 모든 작업에서 최신 클라우드 모델과 같은 결과를 내지는 않습니다. 그래서 사전 점검 단계에서 실제 업무 예시를 놓고 무엇이 가능하고 무엇이 어려운지 먼저 말씀드립니다.", // OWNER-CONFIRM
         },
         {
           question: "어떤 AI 모델을 쓰나요?",
@@ -410,7 +420,7 @@ export const FAQ = {
         {
           question: "사내에 개발자가 없어도 쓸 수 있나요?",
           answer:
-            "네. 직원은 별도 프로그램 설치 없이 사내 브라우저로 포털에 접속해 질문하고 문서를 찾으면 됩니다. 장비 관리를 맡을 담당자에게는 인계할 때 운영 방법을 따로 안내해 드립니다.",
+            "네. 직원은 별도 프로그램 설치 없이 사내 브라우저로 포털에 접속해 질문하고 문서를 찾으면 됩니다. 장비 관리를 맡을 담당자에게는 인계할 때 운영 방법을 따로 안내해 드립니다.", // OWNER-CONFIRM
         },
         {
           question: "자료를 보여 드리기 전에 NDA부터 맺을 수 있나요?",
@@ -448,13 +458,13 @@ export const CONTACT = {
   reassurance: [
     "기밀 정보는 적지 않으셔도 됩니다. 구체적인 자료는 NDA 체결 후에 받습니다.",
     "연락처를 비워 두시면 이메일로만 연락드립니다.",
-    "상담 후 진행하지 않기로 하셔도 괜찮습니다.",
+    "상담 후 진행하지 않기로 하셔도 괜찮습니다.", // OWNER-CONFIRM
   ],
   emailAlternative: "양식 대신 이메일로 보내셔도 됩니다:",
 };
 
 export const FORM = {
-  intro: "회사명, 성함, 이메일만 적으시면 됩니다. 나머지는 선택입니다.",
+  intro: "회사·기관명, 성함, 회사 이메일을 적고 개인정보 수집·이용에 동의해 주시면 됩니다. 나머지는 선택입니다.",
   typeLegend: "문의 분야",
   fields: {
     company: { label: "회사·기관명", placeholder: "예: 주식회사 OO" },
@@ -480,9 +490,11 @@ export const FORM = {
   submit: "상담 요청 보내기",
   submitting: "보내는 중…",
   submitNote: `${SITE.replyPromise}에 실무 엔지니어가 이메일로 직접 회신합니다.`,
-  errorSummary: (count: number) => `입력 내용을 확인해 주세요. ${count}개 항목을 고쳐야 합니다.`,
+  errorSummary: (count: number) => `입력 내용을 확인해 주세요. ${count}개 항목을 입력하거나 확인해야 합니다.`,
   failed: "전송하지 못했습니다. 입력하신 내용은 그대로 남아 있으니 잠시 후 다시 시도해 주세요.",
   network: "인터넷 연결이 불안정해 보내지 못했습니다. 연결을 확인한 뒤 다시 시도해 주세요. 입력하신 내용은 그대로 남아 있습니다.",
+  stale: "사이트가 방금 업데이트되어 이 화면에서는 보낼 수 없습니다. 새로고침한 뒤 다시 보내 주세요. 입력하신 내용은 새로고침 후에도 그대로 남아 있습니다.",
+  reload: "새로고침",
   fallbackEmail: (email: string) => `계속 문제가 생기면 ${email}로 보내 주세요.`,
   noscript: "문의 양식을 사용하려면 JavaScript가 필요합니다.",
   success: {
@@ -491,7 +503,7 @@ export const FORM = {
       `${name}님, 남겨 주신 내용을 담당 엔지니어가 검토한 뒤 ${SITE.replyPromise}에 ${email}로 회신드리겠습니다.`,
     steps: (nda: boolean) => [
       "엔지니어가 남겨 주신 내용을 먼저 검토합니다.",
-      "이메일로 회신드리고, 원하시면 통화나 미팅 일정을 잡습니다.",
+      "이메일로 회신드리고, 원하시면 통화나 미팅 일정을 잡습니다.", // OWNER-CONFIRM
       nda
         ? "요청하신 대로 회신 메일에서 NDA 체결 절차부터 안내해 드립니다."
         : "상세 자료가 필요하면 NDA를 먼저 체결한 뒤 받습니다.",

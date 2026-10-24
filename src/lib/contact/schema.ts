@@ -50,7 +50,10 @@ export type InquiryInput = {
 export const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 export const PHONE_PATTERN = /^[0-9+\-() ]{8,20}$/;
 
-/** 사람이 양식을 이 시간보다 빨리 제출하는 경우는 거의 없으므로, 봇으로 간주합니다. */
+/**
+ * 페이지를 연 뒤 이 시간 안에 제출되면 자동 제출을 의심합니다.
+ * 사람일 수도 있으므로 버리지 않고, 알림에 '확인 필요' 표시를 붙여 전달합니다.
+ */
 export const MIN_ELAPSED_MS = 3000;
 
 const MESSAGES = {
@@ -92,10 +95,13 @@ export function validateInquiry(input: InquiryInput): FieldErrors {
   return errors;
 }
 
-/** FormData 값은 문자열이 아닐 수도 있으므로(File 등) 문자열이 아니면 빈 값으로 취급합니다. */
+/**
+ * FormData 값은 문자열이 아닐 수도 있으므로(File 등) 문자열이 아니면 빈 값으로 취급합니다.
+ * 전송 과정에서 줄바꿈이 CRLF로 바뀌므로, 브라우저와 같은 LF로 되돌린 뒤 길이를 셉니다.
+ */
 function text(formData: FormData, key: string): string {
   const value = formData.get(key);
-  return typeof value === "string" ? value.trim() : "";
+  return typeof value === "string" ? value.replace(/\r\n?/g, "\n").trim() : "";
 }
 
 export type ParsedInquiryForm = {

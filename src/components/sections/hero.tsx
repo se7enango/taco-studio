@@ -1,5 +1,6 @@
 import { HEADLINE, HERO } from "@/content/site";
 import { ButtonLink, TextLink } from "@/components/ui/links";
+import { keepTogether } from "@/lib/typography";
 
 export function Hero() {
   return (
@@ -8,21 +9,22 @@ export function Hero() {
       aria-labelledby="hero-title"
       className="mx-auto flex min-h-[calc(100svh-3.5rem)] max-w-5xl flex-col justify-between px-5 py-10 sm:px-6 md:min-h-[calc(100svh-4rem)] md:py-14"
     >
-      <p className="text-[13px] font-medium text-ink-muted sm:text-sm">{HERO.label}</p>
+      <p className="text-[13px] font-medium text-ink-muted sm:text-sm">{keepTogether(HERO.label)}</p>
 
-      {/* 제목 두 줄은 어떤 화면 폭에서도 줄바꿈 없이 유지되도록 컨테이너 폭에 비례해 크기를 정합니다. */}
+      {/* 제목 두 줄이 어떤 화면 폭에서도 한 줄씩 들어가도록 컨테이너 폭에 비례해 크기를 정합니다.
+          줄바꿈을 막지는 않으므로, 사용자가 글자 간격이나 글자 크기를 키우면 넘치지 않고 자연스럽게 줄이 바뀝니다. */}
       <div className="@container my-auto py-12">
         <h1
           id="hero-title"
           className="font-display text-[min(calc(100cqi/16.4),4.5rem)] font-normal leading-[1.3] tracking-tight text-ink"
         >
-          <span className="block whitespace-nowrap">{HEADLINE[0]}</span>
-          <span className="mt-2 block whitespace-nowrap text-ink-body">{HEADLINE[1]}</span>
+          <span className="block">{HEADLINE[0]}</span>
+          <span className="mt-2 block text-ink-body">{HEADLINE[1]}</span>
         </h1>
       </div>
 
       <div className="grid gap-6 md:grid-cols-12 md:items-end">
-        <p className="max-w-[34rem] text-base leading-[1.7] text-ink-body sm:text-lg md:col-span-7">{HERO.summary}</p>
+        <p className="max-w-[34rem] text-base leading-[1.7] text-ink-body sm:text-lg md:col-span-7">{keepTogether(HERO.summary)}</p>
         <div className="flex flex-col gap-3 md:col-span-5 md:items-end">
           <ButtonLink cta="hero" className="w-full md:w-auto">
             {HERO.primaryCta}

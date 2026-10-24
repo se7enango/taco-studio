@@ -1,6 +1,7 @@
 import { FAQ } from "@/content/site";
 import { TextLink } from "@/components/ui/links";
 import { Indented, Section } from "@/components/ui/section";
+import { keepTogether } from "@/lib/typography";
 
 export function Faq() {
   return (
@@ -13,13 +14,13 @@ export function Faq() {
               {group.items.map((item) => (
                 <details key={item.question} open={item.defaultOpen} className="group border-b border-line">
                   <summary className="flex min-h-14 cursor-pointer items-center justify-between gap-4 rounded-xs py-4 text-[17px] font-medium leading-normal text-ink outline-hidden focus-visible:ring-2 focus-visible:ring-ink">
-                    <span>{item.question}</span>
+                    <span>{keepTogether(item.question)}</span>
                     <span aria-hidden="true" className="shrink-0 font-mono text-ink-muted">
                       <span className="group-open:hidden">+</span>
                       <span className="hidden group-open:inline">−</span>
                     </span>
                   </summary>
-                  <p className="max-w-[38rem] pb-5 text-base leading-[1.75] text-ink-body">{item.answer}</p>
+                  <p className="max-w-[38rem] pb-5 text-base leading-[1.75] text-ink-body">{keepTogether(item.answer)}</p>
                 </details>
               ))}
             </div>

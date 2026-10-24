@@ -15,6 +15,7 @@ const inquiry: Inquiry = {
   nda: false,
   consent: true,
   source: "hero",
+  elapsedMs: 10_000,
 };
 
 const channel = (name: Channel["name"], url: string): Channel => ({ name, url, payload: () => ({}) });

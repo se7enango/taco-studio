@@ -1,6 +1,7 @@
 import { CONTACT, FORM, SITE } from "@/content/site";
 import { ContactForm } from "@/components/contact/contact-form";
 import { Eyebrow } from "@/components/ui/section";
+import { keepTogether } from "@/lib/typography";
 
 function Aside() {
   return (
@@ -13,7 +14,7 @@ function Aside() {
               <span aria-hidden="true" className="shrink-0 font-mono text-ink-muted">
                 {i + 1}.
               </span>
-              <span>{step}</span>
+              <span>{keepTogether(step)}</span>
             </li>
           ))}
         </ol>
@@ -26,7 +27,7 @@ function Aside() {
               <span aria-hidden="true" className="shrink-0 text-ink-muted">
                 —
               </span>
-              <span>{item}</span>
+              <span>{keepTogether(item)}</span>
             </li>
           ))}
         </ul>
@@ -56,10 +57,12 @@ export function ContactSection() {
           >
             {CONTACT.title}
           </h2>
-          <p className="mt-5 text-lg leading-[1.7] text-ink-body">{CONTACT.lead}</p>
+          <p className="mt-5 text-lg leading-[1.7] text-ink-body">{keepTogether(CONTACT.lead)}</p>
         </div>
 
-        <div className="rounded-md border border-line bg-surface p-5 sm:p-6 md:col-span-7 md:col-start-6 md:row-span-2 md:row-start-1 md:self-start md:p-8">
+        <div
+          data-print="hide"
+          className="rounded-md border border-line bg-surface p-5 sm:p-6 md:col-span-7 md:col-start-6 md:row-span-2 md:row-start-1 md:self-start md:p-8">
           <noscript>
             <p className="mb-6 rounded-sm border border-line p-4 text-sm text-ink-body">
               {FORM.noscript}

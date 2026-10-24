@@ -38,10 +38,14 @@ export function TextLink({
     <a
       href={href}
       {...ctaData(cta, inquiry)}
-      className={`inline-flex min-h-11 items-center gap-2 text-[15px] font-medium text-ink underline decoration-line-strong underline-offset-4 transition-colors hover:decoration-ink ${focusRing} rounded-xs ${className}`}
+      className={`inline-flex min-h-11 items-center text-[15px] font-medium text-ink underline decoration-line-strong underline-offset-4 transition-colors hover:decoration-ink ${focusRing} rounded-xs ${className}`}
     >
-      {children}
-      <Arrow direction={arrow} />
+      {/* 줄이 바뀌어도 화살표가 마지막 단어 옆에 붙어 있도록 한 덩어리로 감쌉니다. */}
+      <span>
+        {children}
+        {"\u00a0"}
+        <Arrow direction={arrow} />
+      </span>
     </a>
   );
 }

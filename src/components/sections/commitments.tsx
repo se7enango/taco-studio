@@ -1,5 +1,6 @@
 import { COMMITMENTS } from "@/content/site";
 import { Section } from "@/components/ui/section";
+import { keepTogether } from "@/lib/typography";
 
 export function Commitments() {
   return (
@@ -18,7 +19,7 @@ export function Commitments() {
                   <span aria-hidden="true" className="shrink-0 text-ink-muted">
                     —
                   </span>
-                  <span>{item}</span>
+                  <span>{keepTogether(item)}</span>
                 </li>
               ))}
             </ul>
