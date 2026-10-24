@@ -390,9 +390,12 @@ export function ContactForm() {
               aria-expanded={consentOpen}
               aria-controls="consent-panel"
               onClick={() => setConsentOpen((open) => !open)}
-              className="ml-8 inline-flex min-h-11 items-start rounded-xs pt-0.5 text-sm leading-[1.6] text-ink-muted underline underline-offset-4 hover:text-ink outline-hidden focus-visible:ring-2 focus-visible:ring-ink"
+              className="group ml-8 inline-flex min-h-11 items-start pt-0.5 text-sm leading-[1.6] text-ink-muted underline underline-offset-4 hover:text-ink outline-hidden"
             >
-              {FORM.fields.consent.toggle}
+              {/* 포커스 표시는 44px 누름 영역이 아니라 글자에 맞춰 그립니다. */}
+              <span className="-mx-1.5 rounded-xs px-1.5 group-focus-visible:ring-2 group-focus-visible:ring-ink">
+                {FORM.fields.consent.toggle}
+              </span>
             </button>
           </div>
           <FieldError name="consent" error={errors.consent} />

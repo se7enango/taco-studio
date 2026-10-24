@@ -19,8 +19,8 @@ function PortalMock() {
           </span>
         </div>
 
-        <div className="space-y-5 px-4 py-5 sm:px-6 sm:py-6">
-          <p className="ml-auto w-fit max-w-[85%] rounded-md bg-line px-4 py-2.5 text-[15px] leading-[1.6] text-ink">
+        <div className="space-y-5 px-4 py-5 sm:px-5 sm:py-6">
+          <p className="ml-auto w-fit max-w-full rounded-md sm:max-w-[85%] bg-line px-4 py-2.5 text-[15px] leading-[1.6] text-ink">
             {keepTogether(mock.question)}
           </p>
           <p className="max-w-[36rem] text-[15px] leading-[1.75] text-ink-body">{keepTogether(mock.answer)}</p>

@@ -22,7 +22,7 @@ export function PrivacyPolicy() {
   return (
     <details id="privacy" className="group">
       {/* 밑줄은 글자에만 긋고, +/− 아래에는 긋지 않습니다. */}
-      <summary className="inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-xs text-ink-body outline-hidden focus-visible:ring-2 focus-visible:ring-ink">
+      <summary className="-mx-1.5 inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-xs px-1.5 text-ink-body outline-hidden focus-visible:ring-2 focus-visible:ring-ink">
         <span className="underline decoration-line-strong underline-offset-4 hover:decoration-ink">{FOOTER.privacyTitle}</span>
         <DisclosureIcon />
       </summary>

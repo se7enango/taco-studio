@@ -12,7 +12,7 @@
  * - '엔지니어가 직접': 첫 화면 안내문, 문의 섹션 제목
  * - NDA: 보안 섹션의 '기밀 유지'와 그 아래 링크, 문의 양식 체크박스
  * - 사전 점검: 진행 과정 2단계, 보안 섹션 머리말
- * - '기밀 정보는 적지 않으셔도': 문의 내용 입력 안내
+ * - 기밀 정보 안내('기밀 정보는 빼고'): 문의 내용 입력 안내
  * - '100%': 서비스 B 조건표, FAQ 소스코드 답변
  * 문구를 더할 때 이 표현이 다른 곳에 또 들어가지 않는지 확인해 주세요.
  */
@@ -111,7 +111,7 @@ export const CTA_SOURCES: Record<InquirySource, string> = {
 
 export const HERO = {
   label: SITE.tagline,
-  summary: `외부 인터넷과 분리된 사내망에 로컬 LLM과 사내 문서 검색 포털을 ${SITE.deliveryAvg} 만에, 고정 견적으로 구축합니다. 맞춤 소프트웨어·AI 개발은 전담 엔지니어가 고객 현장에 들어가 직접 맡습니다.`,
+  summary: `외부 인터넷과 분리된 사내망에 로컬 LLM과 사내 문서 검색 포털을 ${SITE.deliveryAvg} 만에, 고정 견적으로 구축합니다. 맞춤 소프트웨어·AI 개발은 전담 엔지니어가 고객 현장에 들어가 맡습니다.`,
   primaryCta: "상담 요청하기",
   secondaryCta: "화면 예시 보기",
   reassurance: `${SITE.replyPromise}에 엔지니어가 직접 회신합니다.`,
@@ -128,7 +128,7 @@ export const PREVIEW = {
   eyebrow: "구축 결과물",
   title: "직원은 브라우저에서 묻고, 답은 사내 문서에서 찾습니다",
   // OWNER-CONFIRM: 기존 FAQ '사내에 개발자가 없어도 쓸 수 있나요?' 답변과 기존 '보고서 초안' 문구를 옮긴 것
-  lead: "프로그램을 따로 설치하지 않고 사내 브라우저로 포털에 접속해 질문하고, 문서를 찾고, 보고서 초안을 씁니다. 사내에 개발자가 없어도 됩니다.",
+  lead: "따로 프로그램을 설치하지 않고 직원 PC에서 바로 접속합니다. 문서 검색뿐 아니라 보고서 초안 작성에도 쓸 수 있습니다. 사내에 개발자가 없어도 됩니다.",
   mock: {
     app: "사내 AI 포털",
     badge: "화면 예시",
@@ -150,8 +150,8 @@ export const PREVIEW = {
     { term: "계약", value: "고정 견적", description: "확정한 범위 안에서는 금액이 바뀌지 않습니다" },
     { term: "동작 환경", value: "사내망 안에서만", description: "인터넷이나 클라우드 AI를 호출하지 않습니다" },
   ],
-  // OWNER-CONFIRM: 기존 '로컬 AI로 할 수 있는 일과 어려운 일을 먼저 구분해 말씀드립니다'를 옮긴 것
-  note: "사내 장비에서 돌아가는 모델이 모든 작업에서 최신 클라우드 AI만큼 결과를 내지는 않습니다. 그래서 계약 전에 실제 업무 예시로 되는 일과 어려운 일을 먼저 구분해 말씀드립니다.",
+  // 되는 일과 어려운 일을 먼저 구분해 드린다는 약속(OWNER-CONFIRM)은 FAQ '성능' 답변에만 둡니다.
+  note: "사내 장비에서 돌아가는 모델이 모든 작업에서 최신 클라우드 AI만큼 결과를 내지는 않습니다.",
   cta: "우리 회사 문서로도 되는지 물어보기",
 };
 
@@ -199,7 +199,7 @@ export const SERVICES = {
       ],
       terms: [
         { term: "기간", value: SITE.deliveryAvg },
-        { term: "계약", value: "고정 견적, 턴키 납품" },
+        { term: "계약", value: "고정 견적" },
         { term: "소스코드", value: "미포함 (컴파일된 바이너리로 설치)" },
         { term: "장비", value: "고객사 구매, 보유 서버 활용 검토" }, // OWNER-CONFIRM
       ],
@@ -227,12 +227,12 @@ export const SERVICES = {
         { term: "기간", value: "범위에 따라 협의" },
         { term: "계약", value: "스프린트 단위 납품" },
         { term: "소스코드", value: "포함 (산출물 100% 인계)" }, // OWNER-CONFIRM: CUSTOM_HANDOVER와 함께 수정
-        { term: "환경", value: "고객사 기존 환경 또는 협의한 환경" },
+        { term: "환경", value: "고객사 기존 인프라 또는 별도 협의" },
       ],
       cta: "맞춤 개발 문의",
     },
   ] satisfies ServiceCard[],
-  undecided: "어느 쪽이 맞을지 아직 모르겠다면, 정하지 않은 채로 문의하셔도 됩니다.",
+  undecided: "어느 쪽이 맞을지 아직 모르겠다면 지금 상황만 알려 주세요.",
   undecidedCta: "정하지 않고 문의하기",
 };
 
@@ -247,14 +247,14 @@ export type ProcessStep = {
 export const PROCESS = {
   eyebrow: "진행 과정",
   title: "문의부터 인계까지, 이렇게 진행됩니다",
-  lead: "두 서비스 모두 같은 순서로 진행하며, 금액은 3단계에서 확정합니다.",
+  lead: "두 서비스 모두 같은 순서로 진행하며, 견적은 3단계에서 드립니다.",
   /** 화면에는 trackCodes(A·B)만 보이고, 화면 낭독기는 trackLabels를 읽습니다. */
   trackCodes: { onprem: "A", custom: "B" },
   trackLabels: { onprem: "온프레미스 AI 구축", custom: "맞춤 개발" },
   steps: [
     {
       title: "문의",
-      body: "검토 중인 과제의 개요만 남겨 주셔도 됩니다.",
+      body: "검토 중인 과제를 간단히 알려 주세요.",
     },
     {
       title: "회신과 사전 점검",
@@ -263,7 +263,7 @@ export const PROCESS = {
     {
       title: "범위 확정과 견적",
       // OWNER-CONFIRM: 둘째 문장은 기존 '일정이나 비용이 달라질 수 있는 요인은 계약 전에 먼저 말씀드립니다'
-      body: "범위, 산출물, 일정을 문서로 정리해 견적을 드립니다. 비용이 달라질 수 있는 요인도 계약 전에 말씀드립니다.",
+      body: "범위, 산출물, 일정을 문서로 정리해 견적을 드립니다. 비용이 달라질 수 있는 요인도 이때 함께 알려 드립니다.",
     },
     {
       title: "구축·개발",
@@ -366,7 +366,7 @@ export const FAQ = {
         {
           question: "한글(HWP)·PDF·엑셀 문서도 검색할 수 있나요?",
           answer:
-            "실제로 연결할 문서를 샘플로 받아 형식과 분량을 확인한 뒤 처리 방식을 정합니다. 바로 처리하기 어려운 형식이 있으면 계약 전에 말씀드립니다.", // OWNER-CONFIRM
+            "실제로 연결할 문서를 샘플로 받아 형식과 분량을 확인한 뒤 처리 방식을 정합니다. 바로 처리하기 어려운 형식은 견적 단계에서 미리 알려 드립니다.", // OWNER-CONFIRM
         },
         {
           question: "부서마다 볼 수 있는 문서를 나눌 수 있나요?",
@@ -398,7 +398,7 @@ export const INQUIRY_TYPE_LABELS: Record<InquiryType, { title: string; descripti
 export const CONTACT = {
   eyebrow: "문의",
   title: "엔지니어가 직접 읽고 답합니다",
-  lead: "영업 담당자를 거치지 않고, 실제로 구축하고 개발할 사람이 처음부터 상담합니다. 아직 정해진 것이 없어도 괜찮습니다.",
+  lead: "영업 담당자를 거치지 않고, 실제로 구축하고 개발할 사람이 처음부터 상담합니다.",
   stepsTitle: "문의 후 진행",
   steps: [
     "남겨 주신 내용을 검토해 이메일로 회신드립니다.",
@@ -424,7 +424,7 @@ export const FORM = {
     phone: { label: "연락처 (선택)", placeholder: "010-0000-0000", hint: "비워 두시면 이메일로만 연락드립니다." },
     message: {
       label: "문의 내용 (선택)",
-      hint: "기밀 정보는 적지 않으셔도 됩니다. 사용 인원, 망 구성, 원하시는 일정 정도면 충분합니다.",
+      hint: "기밀 정보는 빼고 사용 인원과 망 구성, 원하시는 일정 정도를 적어 주세요.",
     },
     nda: { label: "상담 전에 NDA(비밀유지계약)를 먼저 체결하고 싶습니다." },
     consent: { label: "[필수] 개인정보 수집·이용에 동의합니다.", toggle: "내용 보기" },

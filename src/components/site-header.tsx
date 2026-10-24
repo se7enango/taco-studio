@@ -9,7 +9,7 @@ export function SiteHeader({ base = "" }: { base?: "" | "/" }) {
         <a
           href={base || "#top"}
           aria-label={base ? `${SITE.name} 첫 화면으로` : `${SITE.name} 맨 위로`}
-          className="whitespace-nowrap rounded-xs font-serif text-lg font-semibold tracking-tight text-ink outline-hidden focus-visible:ring-2 focus-visible:ring-ink sm:text-xl"
+          className="-mx-1.5 whitespace-nowrap rounded-xs px-1.5 font-serif text-lg font-semibold tracking-tight text-ink outline-hidden focus-visible:ring-2 focus-visible:ring-ink sm:text-xl"
         >
           {SITE.name}
         </a>
@@ -20,7 +20,7 @@ export function SiteHeader({ base = "" }: { base?: "" | "/" }) {
                 <li key={item.href}>
                   <a
                     href={`${base}${item.href}`}
-                    className="rounded-xs py-2 transition-colors hover:text-ink outline-hidden focus-visible:text-ink focus-visible:ring-2 focus-visible:ring-ink"
+                    className="-mx-1.5 rounded-xs px-1.5 py-2 transition-colors hover:text-ink outline-hidden focus-visible:text-ink focus-visible:ring-2 focus-visible:ring-ink"
                   >
                     {item.label}
                   </a>
