@@ -9,11 +9,12 @@ export type InquiryType = (typeof INQUIRY_TYPES)[number];
 export const INQUIRY_SOURCES = [
   "header",
   "hero",
-  "barriers",
+  "preview",
   "service-onprem",
   "service-custom",
   "services-undecided",
   "process",
+  "security",
   "faq",
   "link",
   "direct",

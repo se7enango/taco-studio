@@ -7,17 +7,20 @@ type CtaProps = {
   cta?: InquirySource;
   /** 클릭하면 문의 양식의 '문의 분야'를 이 값으로 바꿉니다. */
   inquiry?: InquiryType;
+  /** 클릭하면 문의 양식의 'NDA 먼저 체결' 체크박스를 켭니다. */
+  nda?: boolean;
   className?: string;
   children: ReactNode;
 };
 
-function ctaData(cta?: InquirySource, inquiry?: InquiryType) {
-  return { "data-cta": cta, "data-inquiry": inquiry };
+function ctaData(cta?: InquirySource, inquiry?: InquiryType, nda?: boolean) {
+  return { "data-cta": cta, "data-inquiry": inquiry, "data-nda": nda ? "true" : undefined };
 }
 
 export function Arrow({ direction = "right" }: { direction?: "right" | "down" }) {
   return (
-    <span aria-hidden="true" className="font-mono">
+    // 모노 글꼴(라틴 전용)에는 화살표가 없어 OS마다 다른 글꼴로 그려지므로, 본문 글꼴(Noto Sans KR)로 그립니다.
+    <span aria-hidden="true">
       {direction === "right" ? "→" : "↓"}
     </span>
   );
@@ -30,6 +33,7 @@ export function TextLink({
   href = "#contact",
   cta,
   inquiry,
+  nda,
   arrow = "right",
   className = "",
   children,
@@ -37,7 +41,7 @@ export function TextLink({
   return (
     <a
       href={href}
-      {...ctaData(cta, inquiry)}
+      {...ctaData(cta, inquiry, nda)}
       className={`inline-flex min-h-11 items-center text-[15px] font-medium text-ink underline decoration-line-strong underline-offset-4 transition-colors hover:decoration-ink ${focusRing} rounded-xs ${className}`}
     >
       {/* 줄이 바뀌어도 화살표가 마지막 단어 옆에 붙어 있도록 한 덩어리로 감쌉니다. */}

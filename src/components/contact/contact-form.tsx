@@ -86,6 +86,10 @@ function focusFirstError(errors: FieldErrors) {
   if (first) document.getElementById(fieldId(first))?.focus();
 }
 
+/** 어두운 배경에서 기본 체크박스(accent-color)가 회색 사각형으로 보여 비활성처럼 보이므로 직접 그립니다. 고대비 모드에서는 기본 모양으로 돌아갑니다. */
+const checkboxClass =
+  "grid size-5 shrink-0 cursor-pointer appearance-none place-content-center rounded-xs border border-line-strong bg-canvas transition-colors checked:border-ink checked:bg-ink before:size-3 before:scale-0 before:bg-canvas before:transition-transform before:content-[''] before:[clip-path:polygon(14%_44%,0_65%,50%_100%,100%_16%,80%_0%,43%_62%)] checked:before:scale-100 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2 focus-visible:ring-offset-surface aria-invalid:border-danger forced-colors:appearance-auto";
+
 /**
  * 상담 요청 양식.
  * 입력값은 React 상태가 아니라 DOM이 가지고 있습니다(비제어 입력). 그래서 스크립트가 늦게 뜨는 동안 입력한 내용,
@@ -140,6 +144,11 @@ export function ContactForm() {
       const link = (event.target as Element | null)?.closest<HTMLAnchorElement>("a[data-cta]");
       if (!link) return;
       setSource(toInquirySource(link.dataset.cta));
+      // 'NDA부터 체결하기' 링크는 체크박스를 켜 둡니다(끄지는 않습니다).
+      if (link.dataset.nda) {
+        const box = formRef.current?.elements.namedItem("nda");
+        if (box instanceof HTMLInputElement) box.checked = true;
+      }
       if (!link.dataset.inquiry) return;
       const next = toInquiryType(link.dataset.inquiry);
       if (next === "undecided" && checkedType(formRef.current) !== "undecided") return;
@@ -329,12 +338,12 @@ export function ContactForm() {
 
       {textInput("company", { type: "text", required: true, autoComplete: "organization", enterKeyHint: "next" })}
 
-      <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2">
+      <div className="grid gap-6 sm:grid-cols-2">
         {textInput("name", { type: "text", required: true, autoComplete: "name", enterKeyHint: "next" })}
         {textInput("title", { type: "text", autoComplete: "organization-title", enterKeyHint: "next" })}
       </div>
 
-      <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2">
+      <div className="grid gap-6 sm:grid-cols-2">
         {textInput("email", { type: "email", required: true, inputMode: "email", autoComplete: "email", spellCheck: false })}
         {textInput("phone", { type: "tel", inputMode: "tel", autoComplete: "tel" })}
       </div>
@@ -361,7 +370,7 @@ export function ContactForm() {
 
       <div className="space-y-3">
         <label className="flex min-h-11 cursor-pointer items-start gap-3 text-[15px] leading-[1.6] text-ink-body">
-          <input type="checkbox" name="nda" className="mt-0.5 size-5 shrink-0 accent-white" />
+          <input type="checkbox" name="nda" className={`mt-0.5 ${checkboxClass}`} />
           <span>{FORM.fields.nda.label}</span>
         </label>
 
@@ -372,7 +381,7 @@ export function ContactForm() {
                 {...describedBy("consent", { error: errors.consent })}
                 type="checkbox"
                 required
-                className="mt-0.5 size-5 shrink-0 accent-white"
+                className={`mt-0.5 ${checkboxClass}`}
               />
               <span>{FORM.fields.consent.label}</span>
             </label>
@@ -381,7 +390,7 @@ export function ContactForm() {
               aria-expanded={consentOpen}
               aria-controls="consent-panel"
               onClick={() => setConsentOpen((open) => !open)}
-              className="inline-flex min-h-11 items-start rounded-xs pt-0.5 text-sm leading-[1.6] text-ink-muted underline underline-offset-4 hover:text-ink outline-hidden focus-visible:ring-2 focus-visible:ring-ink"
+              className="ml-8 inline-flex min-h-11 items-start rounded-xs pt-0.5 text-sm leading-[1.6] text-ink-muted underline underline-offset-4 hover:text-ink outline-hidden focus-visible:ring-2 focus-visible:ring-ink"
             >
               {FORM.fields.consent.toggle}
             </button>

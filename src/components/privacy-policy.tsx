@@ -1,4 +1,5 @@
 import { FOOTER, PRIVACY, SITE } from "@/content/site";
+import { DisclosureIcon } from "@/components/ui/icons";
 import { keepTogether } from "@/lib/typography";
 
 /** 값이 비어 있는 항목은 출력하지 않습니다. */
@@ -20,14 +21,10 @@ export function PrivacyPolicy() {
 
   return (
     <details id="privacy" className="group">
-      <summary className="inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-xs text-ink-body underline decoration-line-strong underline-offset-4 outline-hidden hover:decoration-ink focus-visible:ring-2 focus-visible:ring-ink">
-        {FOOTER.privacyTitle}
-        <span aria-hidden="true" className="font-mono text-ink-muted group-open:hidden">
-          +
-        </span>
-        <span aria-hidden="true" className="hidden font-mono text-ink-muted group-open:inline">
-          −
-        </span>
+      {/* 밑줄은 글자에만 긋고, +/− 아래에는 긋지 않습니다. */}
+      <summary className="inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-xs text-ink-body outline-hidden focus-visible:ring-2 focus-visible:ring-ink">
+        <span className="underline decoration-line-strong underline-offset-4 hover:decoration-ink">{FOOTER.privacyTitle}</span>
+        <DisclosureIcon />
       </summary>
       <ol className="mt-4 max-w-2xl space-y-3 text-[13px] leading-[1.8] text-ink-body">
         {sections.map(([title, body], i) => (

@@ -29,13 +29,10 @@ export function SuccessPanel({ inquiryId, name, email, nda, onReset }: Props) {
         {FORM.success.title}
       </h3>
       <p className="text-base leading-[1.75] text-ink-body">{FORM.success.body(name, email)}</p>
-      <ol className="space-y-2 text-[15px] leading-[1.7] text-ink-body">
-        {FORM.success.steps(nda).map((step, i) => (
-          <li key={step} className="flex gap-3">
-            <span aria-hidden="true" className="shrink-0 font-mono text-ink-muted">
-              {i + 1}.
-            </span>
-            <span>{keepTogether(step)}</span>
+      <ol className="list-decimal space-y-2 pl-[1.25em] text-[15px] leading-[1.7] text-ink-body marker:text-[13px] marker:text-ink-muted">
+        {FORM.success.steps(nda).map((step) => (
+          <li key={step} className="pl-1">
+            {keepTogether(step)}
           </li>
         ))}
       </ol>

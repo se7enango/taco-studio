@@ -1,6 +1,7 @@
 import { FAQ } from "@/content/site";
+import { DisclosureIcon } from "@/components/ui/icons";
 import { TextLink } from "@/components/ui/links";
-import { Indented, Section } from "@/components/ui/section";
+import { Indented, labelClass, Section } from "@/components/ui/section";
 import { keepTogether } from "@/lib/typography";
 
 export function Faq() {
@@ -9,16 +10,14 @@ export function Faq() {
       <Indented>
         {FAQ.groups.map((group) => (
           <div key={group.heading}>
-            <h3 className="mt-10 text-[13px] font-semibold text-ink-muted">{group.heading}</h3>
+            <h3 className={`mt-12 ${labelClass}`}>{group.heading}</h3>
             <div className="mt-2 max-w-3xl border-t border-line">
               {group.items.map((item) => (
                 <details key={item.question} open={item.defaultOpen} className="group border-b border-line">
-                  <summary className="flex min-h-14 cursor-pointer items-center justify-between gap-4 rounded-xs py-4 text-[17px] font-medium leading-normal text-ink outline-hidden focus-visible:ring-2 focus-visible:ring-ink">
-                    <span>{keepTogether(item.question)}</span>
-                    <span aria-hidden="true" className="shrink-0 font-mono text-ink-muted">
-                      <span className="group-open:hidden">+</span>
-                      <span className="hidden group-open:inline">−</span>
-                    </span>
+                  {/* 질문이 두 줄이 되어도 +/−가 첫 줄 가운데에 오도록, 아이콘 상자를 한 줄 높이(1.5em)로 둡니다. */}
+                  <summary className="flex min-h-14 cursor-pointer items-start justify-between gap-4 rounded-xs py-4 text-[17px] font-medium leading-normal text-ink outline-hidden focus-visible:ring-2 focus-visible:ring-ink">
+                    <span className="text-balance">{keepTogether(item.question)}</span>
+                    <DisclosureIcon className="h-[1.5em]" />
                   </summary>
                   <p className="max-w-[38rem] pb-5 text-base leading-[1.75] text-ink-body">{keepTogether(item.answer)}</p>
                 </details>

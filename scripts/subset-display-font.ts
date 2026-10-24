@@ -16,18 +16,7 @@ import { spawnSync } from "node:child_process";
 import { mkdtempSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import {
-  ABOUT,
-  BARRIERS,
-  COMMITMENTS,
-  CONTACT,
-  FAQ,
-  FORM,
-  HEADLINE,
-  PROCESS,
-  SECURITY,
-  SERVICES,
-} from "../src/content/site";
+import { CONTACT, FAQ, FORM, HEADLINE, PREVIEW, PROCESS, SECURITY, SERVICES } from "../src/content/site";
 
 const source = process.argv[2];
 if (!source) {
@@ -38,15 +27,11 @@ if (!source) {
 /** font-display / font-serif로 그리는 한글 문구 */
 const displayText = [
   ...HEADLINE,
-  ABOUT.title,
-  ...ABOUT.stats.map((stat) => stat.value),
-  BARRIERS.title,
+  PREVIEW.title,
   SERVICES.title,
   ...SERVICES.cards.map((card) => card.title),
   PROCESS.title,
   SECURITY.title,
-  COMMITMENTS.title,
-  ...COMMITMENTS.columns.map((column) => column.heading),
   FAQ.title,
   CONTACT.title,
   FORM.success.title,

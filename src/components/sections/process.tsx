@@ -3,29 +3,41 @@ import { TextLink } from "@/components/ui/links";
 import { Indented, Section } from "@/components/ui/section";
 import { keepTogether } from "@/lib/typography";
 
+/**
+ * 다섯 단계. 넓은 화면(lg 이상)에서는 가로 다섯 칸, 그보다 좁으면 번호 열과 본문 열로 된 세로 목록입니다.
+ * 세로 목록에서는 번호와 단계 이름의 글자 바닥선을 맞춥니다.
+ */
 export function Process() {
   return (
     <Section id="process" eyebrow={PROCESS.eyebrow} title={PROCESS.title} lead={PROCESS.lead}>
-      <ol className="mt-12 border-t border-line">
+      <ol className="mt-12 border-t border-line lg:grid lg:grid-cols-5 lg:gap-x-6 lg:border-t-0">
         {PROCESS.steps.map((step, i) => (
-          <li key={step.title} className="border-b border-line py-6 md:grid md:grid-cols-12 md:gap-x-6">
-            <span aria-hidden="true" className="block font-mono text-sm text-ink-muted md:col-span-3 md:pt-1">
+          <li
+            key={step.title}
+            className="grid grid-cols-[2.5rem_1fr] items-baseline border-b border-line py-5 md:grid-cols-12 md:gap-x-6 lg:block lg:border-b-0 lg:border-t lg:pt-5 lg:pb-0"
+          >
+            <span aria-hidden="true" className="font-mono text-[13px] text-ink-muted md:col-span-3 lg:block">
               {String(i + 1).padStart(2, "0")}
             </span>
-            <div className="mt-1 max-w-[38rem] md:col-span-9 md:mt-0">
-              <h3 className="text-lg font-semibold text-ink">{keepTogether(step.title)}</h3>
-              {step.body ? <p className="mt-2 text-base leading-[1.75] text-ink-body">{keepTogether(step.body)}</p> : null}
+            <div className="md:col-span-9 lg:mt-3">
+              <h3 className="text-base font-semibold leading-[1.6] text-ink">{keepTogether(step.title)}</h3>
+              {step.body ? (
+                <p className="mt-1 max-w-[38rem] text-[15px] leading-[1.7] text-ink-body lg:text-[14px]">
+                  {keepTogether(step.body)}
+                </p>
+              ) : null}
               {step.tracks ? (
-                <dl className="mt-3 grid grid-cols-[auto_1fr] gap-x-4 gap-y-2">
+                <dl className="mt-1 grid grid-cols-[1.25rem_1fr] items-baseline gap-y-1.5 text-[15px] leading-[1.7] lg:text-[14px]">
                   {(["onprem", "custom"] as const).map((track) => (
                     <div key={track} className="contents">
-                      <dt className="whitespace-nowrap pt-0.5 text-[13px] font-medium text-ink-muted">
-                        {PROCESS.trackLabels[track]}
+                      <dt className="font-mono text-[12px] text-ink-muted">
+                        <span aria-hidden="true">{PROCESS.trackCodes[track]}</span>
+                        <span className="sr-only">{PROCESS.trackLabels[track]}</span>
                       </dt>
-                      <dd className="text-base leading-[1.75] text-ink-body">
+                      <dd className="text-ink-body">
                         {keepTogether(step.tracks[track])}
                         {track === "onprem" && step.onpremBadge ? (
-                          <span className="ml-2 inline-block whitespace-nowrap rounded-xs border border-line-strong px-2 py-0.5 align-middle text-[12px] leading-normal text-ink-body">
+                          <span className="ml-1.5 inline-block whitespace-nowrap rounded-xs border border-line-strong px-1.5 align-[0.1em] text-[12px] leading-[1.6] text-ink-body">
                             {step.onpremBadge}
                           </span>
                         ) : null}
