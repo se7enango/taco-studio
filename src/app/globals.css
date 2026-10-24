@@ -1,30 +1,152 @@
 @import "tailwindcss";
 
+/* prototype/은 과거 디자인 시안 보관용이므로 클래스 스캔에서 제외합니다. */
+@source not "../../prototype";
+
+/* 색상은 인쇄 시 덮어쓸 수 있도록 inline이 아닌 @theme에 둡니다. */
+@theme {
+  --color-canvas: #0a0a0a;
+  --color-surface: #141414;
+  --color-line: #262626;
+  --color-line-strong: #737373;
+  --color-ink: #fafafa;
+  --color-ink-body: #d4d4d4;
+  --color-ink-muted: #a3a3a3;
+  /* 입력 안내(placeholder)처럼 본문보다 한 단계 옅은 글자 */
+  --color-ink-faint: #8f8f8f;
+  --color-danger: #fda4af;
+}
+
 @theme inline {
-  --color-background: #0a0a0a;
-  --color-foreground: #ededed;
-  --font-serif: var(--font-newsreader), Georgia, serif;
-  --font-sans: var(--font-inter), -apple-system, sans-serif;
-  --font-mono: var(--font-mono), monospace;
+  /* 본문: 한글 고딕 */
+  --font-sans: var(--font-noto-sans-kr), "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
+  /* 워드마크와 숫자: 라틴 세리프 우선, 한글은 명조로 대체 */
+  --font-serif: var(--font-newsreader), var(--font-display-serif), var(--font-noto-serif-kr), "AppleMyungjo", serif;
+  /* 한글 제목 */
+  --font-display: var(--font-display-serif), var(--font-noto-serif-kr), "AppleMyungjo", serif;
+  /* 라틴 전용 라벨 */
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
-:root {
-  color-scheme: dark;
-  --background: #0a0a0a;
-  --foreground: #ededed;
+@layer base {
+  html {
+    color-scheme: dark;
+    scroll-padding-top: 5rem;
+  }
+
+  /* 섹션은 위 여백이 따로 있으므로, 앵커로 이동하면 섹션 윗선을 머리글 아랫선(휴대폰 56px, md 이상 64px)에 맞춥니다. */
+  section[id] {
+    scroll-margin-top: -1.5rem;
+  }
+
+  @media (width >= 48rem) {
+    section[id] {
+      scroll-margin-top: -1rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+
+  body {
+    background-color: var(--color-canvas);
+    color: var(--color-ink-body);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    word-break: keep-all;
+    overflow-wrap: anywhere;
+    line-break: strict;
+    font-synthesis-style: none;
+  }
+
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+
+  p,
+  li,
+  dd {
+    text-wrap: pretty;
+  }
+
+  ::selection {
+    background-color: #404040;
+    color: var(--color-ink);
+  }
+
+  summary {
+    list-style: none;
+  }
+
+  summary::-webkit-details-marker {
+    display: none;
+  }
+
+  /* Tailwind v4 기본 스타일은 버튼에 손가락 커서를 주지 않습니다. 비활성·처리 중 커서는 유틸리티(disabled:, aria-disabled:)가 덮어씁니다. */
+  button:not(:disabled) {
+    cursor: pointer;
+  }
 }
 
-body {
-  background-color: #0a0a0a;
-  color: #ededed;
-  font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  overflow-x: hidden;
-}
+@media print {
+  :root {
+    --color-canvas: #fff;
+    --color-surface: #fff;
+    --color-line: #ccc;
+    --color-line-strong: #888;
+    --color-ink: #000;
+    --color-ink-body: #111;
+    --color-ink-muted: #444;
+  }
 
-.font-serif {
-  font-family: var(--font-newsreader), Georgia, "Times New Roman", serif;
-}
+  /* 인쇄본은 내부 보고(품의)용 자료로 쓰이므로 버튼·양식은 빼고 내용만 남깁니다. */
+  header,
+  a[data-cta],
+  #top a,
+  [data-print="hide"] {
+    display: none !important;
+  }
 
-.font-mono {
-  font-family: var(--font-mono), "JetBrains Mono", monospace;
+  /* 입력 양식은 빼고, 접수 완료 화면(접수 번호)은 인쇄합니다. */
+  [data-print="form-card"]:has(form) {
+    display: none !important;
+  }
+
+  /* 펼침 표시(+/−)는 화면 전용입니다. */
+  summary [aria-hidden="true"] {
+    display: none !important;
+  }
+
+  #top {
+    min-height: auto;
+  }
+
+  /* 화면용 위아래 여백(7rem)을 줄여, 섹션 제목이 페이지 끝에 홀로 남는 일을 줄입니다. */
+  main > section:not(#top) {
+    padding-block: 3rem;
+  }
+
+  /* 접힌 FAQ 답변과 개인정보처리방침도 인쇄합니다. */
+  details::details-content {
+    content-visibility: visible;
+    display: block;
+  }
+
+  article,
+  li,
+  dl > div,
+  figure {
+    break-inside: avoid;
+  }
+
+  h2,
+  h3 {
+    break-after: avoid;
+  }
 }

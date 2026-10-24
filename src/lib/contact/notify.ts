@@ -1,0 +1,56 @@
+import { toDiscordPayload, toSlackPayload, type Inquiry } from "./format";
+
+export const NOTIFY_TIMEOUT_MS = 5000;
+
+export type Channel = {
+  name: "slack" | "discord";
+  url: string;
+  payload: (inquiry: Inquiry) => unknown;
+};
+
+export type NotifyResult = {
+  attempted: number;
+  delivered: string[];
+  failed: { channel: string; reason: string }[];
+};
+
+/** 환경 변수에 설정된 알림 채널. 둘 다 설정되어 있으면 둘 다 보냅니다. */
+export function configuredChannels(env: Record<string, string | undefined> = process.env): Channel[] {
+  const channels: Channel[] = [];
+  if (env.SLACK_WEBHOOK_URL) channels.push({ name: "slack", url: env.SLACK_WEBHOOK_URL, payload: toSlackPayload });
+  if (env.DISCORD_WEBHOOK_URL) channels.push({ name: "discord", url: env.DISCORD_WEBHOOK_URL, payload: toDiscordPayload });
+  return channels;
+}
+
+async function send(channel: Channel, inquiry: Inquiry): Promise<void> {
+  const res = await fetch(channel.url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(channel.payload(inquiry)),
+    signal: AbortSignal.timeout(NOTIFY_TIMEOUT_MS),
+  });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+}
+
+/**
+ * 로그에 남길 실패 사유. fetch는 주소를 해석하지 못하면 오류 메시지에 웹훅 주소(비밀값)를 그대로 담으므로
+ * 메시지를 그대로 기록하지 않습니다.
+ */
+export function failureReason(error: unknown): string {
+  if (!(error instanceof Error)) return "unknown";
+  if (error.message.startsWith("HTTP ")) return error.message;
+  if (error.name === "TimeoutError" || error.name === "AbortError") return "timeout";
+  const code = (error.cause as { code?: unknown } | undefined)?.code;
+  return typeof code === "string" ? `${error.name} ${code}` : error.name;
+}
+
+export async function notify(inquiry: Inquiry, channels: Channel[] = configuredChannels()): Promise<NotifyResult> {
+  const results = await Promise.allSettled(channels.map((channel) => send(channel, inquiry)));
+  const result: NotifyResult = { attempted: channels.length, delivered: [], failed: [] };
+  results.forEach((outcome, i) => {
+    const channel = channels[i].name;
+    if (outcome.status === "fulfilled") result.delivered.push(channel);
+    else result.failed.push({ channel, reason: failureReason(outcome.reason) });
+  });
+  return result;
+}
