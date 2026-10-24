@@ -6,7 +6,7 @@
 ## 요구 사항
 
 - [bun](https://bun.sh) 1.4 이상
-- Node.js 20.9 이상 (Next.js 16 요구 사항)
+- Node.js 22 (`package.json`의 `engines`; Next.js 16 최소 요구 사항은 20.9)
 
 ## 명령어
 
@@ -16,8 +16,8 @@ bun run dev          # 개발 서버 (http://localhost:3000)
 bun run build        # 프로덕션 빌드
 bun run start        # 빌드 결과 실행
 bun run lint         # ESLint
-bun run typecheck    # TypeScript 검사
-bun test             # 단위 테스트 (문의 검증·알림 포맷·전송)
+bun run typecheck    # TypeScript 검사 (next typegen으로 라우트 타입을 먼저 만듭니다)
+bun test             # 단위 테스트 (문의 검증·알림 포맷·전송·서버 액션·문구 배치 규칙)
 ```
 
 ## 환경 변수
