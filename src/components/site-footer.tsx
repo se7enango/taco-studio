@@ -1,6 +1,7 @@
 import { FOOTER, SITE } from "@/content/site";
 import { keepTogether } from "@/lib/typography";
 import { PrivacyPolicy } from "./privacy-policy";
+import { pageColumn } from "./ui/section";
 
 /** 섹션과 같은 3/9칸 격자에 놓아, 본문 글자가 섹션 제목과 같은 세로선에서 시작하게 합니다. */
 export function SiteFooter() {
@@ -8,7 +9,7 @@ export function SiteFooter() {
 
   return (
     <footer className="border-t border-line py-12 text-[13px] text-ink-muted">
-      <div className="mx-auto max-w-5xl px-5 sm:px-6 md:grid md:grid-cols-12 md:items-baseline md:gap-x-6">
+      <div className={`${pageColumn} md:grid md:grid-cols-12 md:items-baseline md:gap-x-6`}>
         <p className="font-serif text-base font-semibold text-ink md:col-span-3">
           {SITE.name}
           <span className="ml-2 font-sans text-[13px] font-normal text-ink-muted md:ml-0 md:block">{SITE.domain}</span>

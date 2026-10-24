@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { ButtonLink } from "@/components/ui/links";
+import { pageColumn, SectionLead, SectionTitle } from "@/components/ui/section";
 import { NOT_FOUND, SITE } from "@/content/site";
 
 export const metadata: Metadata = {
@@ -17,20 +18,15 @@ export default function NotFound() {
       <main id="main" tabIndex={-1} className="outline-hidden">
         <section
           aria-labelledby="not-found-title"
-          className="mx-auto flex min-h-[60svh] max-w-5xl flex-col justify-center px-5 py-20 sm:px-6"
+          className={`${pageColumn} flex min-h-[60svh] flex-col justify-center py-20`}
         >
           <p lang="en" className="font-mono text-xs uppercase tracking-[0.14em] text-ink-muted">
             404
           </p>
-          <h1
-            id="not-found-title"
-            className="mt-3 font-display text-[clamp(1.625rem,1.2rem+1.6vw,2.25rem)] font-medium leading-[1.35] text-ink"
-          >
+          <SectionTitle as="h1" id="not-found-title" className="mt-3">
             {NOT_FOUND.title}
-          </h1>
-          <p className="mt-5 max-w-[38rem] text-lg leading-[1.7] text-ink-body">
-            {NOT_FOUND.body}
-          </p>
+          </SectionTitle>
+          <SectionLead>{NOT_FOUND.body}</SectionLead>
           <div data-print="hide" className="mt-8 flex flex-wrap gap-3">
             <ButtonLink href="/">{NOT_FOUND.home}</ButtonLink>
             <ButtonLink href="/#contact" variant="outline">

@@ -1,6 +1,6 @@
 import { CONTACT, FORM, SITE } from "@/content/site";
 import { ContactForm } from "@/components/contact/contact-form";
-import { Eyebrow, labelClass } from "@/components/ui/section";
+import { Eyebrow, labelClass, pageColumn, SectionLead, SectionTitle } from "@/components/ui/section";
 import { keepTogether } from "@/lib/typography";
 
 function Aside() {
@@ -43,16 +43,11 @@ export function ContactSection() {
   return (
     <section id="contact" aria-labelledby="contact-title" className="border-t border-line py-20 md:py-28">
       <span id="consult-c" aria-hidden="true" />
-      <div className="mx-auto grid max-w-5xl gap-y-10 px-5 sm:px-6 lg:grid-cols-12 lg:grid-rows-[auto_1fr] lg:gap-x-10">
+      <div className={`${pageColumn} grid gap-y-10 lg:grid-cols-12 lg:grid-rows-[auto_1fr] lg:gap-x-10`}>
         <div className="lg:col-span-5 lg:row-start-1 print:break-inside-avoid print:break-after-avoid">
           <Eyebrow className="mb-3">{CONTACT.eyebrow}</Eyebrow>
-          <h2
-            id="contact-title"
-            className="font-display text-[clamp(1.625rem,1.2rem+1.6vw,2.25rem)] font-medium leading-[1.35] tracking-[-0.015em] text-ink"
-          >
-            {CONTACT.title}
-          </h2>
-          <p className="mt-5 max-w-[38rem] text-lg leading-[1.7] text-ink-body">{keepTogether(CONTACT.lead)}</p>
+          <SectionTitle id="contact-title">{CONTACT.title}</SectionTitle>
+          <SectionLead>{CONTACT.lead}</SectionLead>
         </div>
 
         <div

@@ -1,11 +1,12 @@
 import { NAV, SITE } from "@/content/site";
 import { HeaderCta } from "./header-cta";
+import { pageColumn } from "./ui/section";
 
 /** base: 첫 화면이 아닌 페이지(404 등)에서는 "/"를 넘겨 첫 화면의 섹션으로 이동하게 합니다. */
 export function SiteHeader({ base = "" }: { base?: "" | "/" }) {
   return (
     <header className="sticky top-0 z-40 border-b border-line bg-canvas/90 backdrop-blur max-[240px]:static">
-      <div className="mx-auto flex h-14 max-w-5xl items-center justify-between gap-4 px-5 sm:px-6 md:h-16 max-[240px]:h-auto max-[240px]:flex-wrap max-[240px]:gap-y-1 max-[240px]:py-2">
+      <div className={`${pageColumn} flex h-14 items-center justify-between gap-4 md:h-16 max-[240px]:h-auto max-[240px]:flex-wrap max-[240px]:gap-y-1 max-[240px]:py-2`}>
         <a
           href={base || "#top"}
           aria-label={base ? `${SITE.name} 첫 화면으로` : `${SITE.name} 맨 위로`}

@@ -12,6 +12,8 @@
   --color-ink: #fafafa;
   --color-ink-body: #d4d4d4;
   --color-ink-muted: #a3a3a3;
+  /* 입력 안내(placeholder)처럼 본문보다 한 단계 옅은 글자 */
+  --color-ink-faint: #8f8f8f;
   --color-danger: #fda4af;
 }
 

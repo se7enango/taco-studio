@@ -38,11 +38,9 @@ export function SuccessPanel({ inquiryId, name, email, nda, onReset }: Props) {
       </ol>
       <div className="space-y-1 text-[13px] text-ink-muted">
         <p>{FORM.success.spam}</p>
-        {inquiryId !== "0" ? (
-          <p>
-            {FORM.success.reference} <span className="font-mono text-ink-body">{inquiryId}</span>
-          </p>
-        ) : null}
+        <p>
+          {FORM.success.reference} <span className="font-mono text-ink-body">{inquiryId}</span>
+        </p>
       </div>
       <button
         type="button"

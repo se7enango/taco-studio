@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 
 export const inputClass =
-  "block w-full rounded-sm border border-line-strong bg-canvas px-4 text-base text-ink placeholder:text-[#8f8f8f] transition-colors outline-hidden focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2 focus-visible:ring-offset-surface aria-invalid:border-danger";
+  "block w-full rounded-sm border border-line-strong bg-canvas px-4 text-base text-ink placeholder:text-ink-faint transition-colors outline-hidden focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2 focus-visible:ring-offset-surface aria-invalid:border-danger";
 
 export function fieldId(name: string) {
   return `field-${name}`;
