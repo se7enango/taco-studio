@@ -15,7 +15,8 @@ const contentSecurityPolicy = [
   "base-uri 'self'",
   "form-action 'self'",
   "frame-ancestors 'none'",
-  "upgrade-insecure-requests",
+  // upgrade-insecure-requests는 넣지 않습니다. 모든 자원이 같은 출처('self')이고 HSTS가 HTTPS를 강제하므로 얻는 것이 없고,
+  // HTTP로 띄운 로컬 빌드를 휴대폰에서 사내망 주소로 열면 CSS·JS가 https로 바뀌어 화면이 깨집니다.
 ].join("; ");
 
 const securityHeaders = [

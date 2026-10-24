@@ -98,7 +98,7 @@ export function validateInquiry(input: InquiryInput): FieldErrors {
 }
 
 /** 글자 방향을 뒤집어 보이게 하는 제어 문자. 알림에서 이메일·이름을 다르게 보이게 하는 데 쓰일 수 있습니다. */
-const BIDI_CONTROLS = /[\u200E\u200F\u202A-\u202E\u2066-\u2069]/g;
+const BIDI_CONTROLS = /\p{Bidi_Control}/gu;
 
 /**
  * FormData 값은 문자열이 아닐 수도 있으므로(File 등) 문자열이 아니면 빈 값으로 취급합니다.

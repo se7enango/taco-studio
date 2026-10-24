@@ -97,10 +97,18 @@ describe("보안 회귀", () => {
 
   test("한 줄 입력란의 줄바꿈과 방향 제어 문자는 지운다", () => {
     const { input } = parseInquiryForm(
-      form({ company: "ACME\n이메일: x@evil.co", name: "홍\u202E길동", message: "첫 줄\n둘째 줄" }),
+      form({
+        company: "ACME\n이메일: x@evil.co",
+        name: "홍\u202E길동",
+        title: "팀\u061C장",
+        email: "kim1\u061C2@b.co.kr",
+        message: "첫 줄\n둘째 줄",
+      }),
     );
     expect(input.company).toBe("ACME 이메일: x@evil.co");
     expect(input.name).toBe("홍길동");
+    expect(input.title).toBe("팀장");
+    expect(input.email).toBe("kim12@b.co.kr");
     expect(input.message).toBe("첫 줄\n둘째 줄");
   });
 });

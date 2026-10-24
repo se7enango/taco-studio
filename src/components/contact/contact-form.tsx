@@ -28,7 +28,7 @@ import { useCtaWiring } from "./use-cta-wiring";
 type TextField = "company" | "name" | "title" | "email" | "phone";
 
 /** 한 줄 입력란에서 휴대폰 키보드의 '다음'(Enter)을 누르면 옮겨 갈 칸. 화면 순서와 같습니다. */
-const NEXT_FIELD: Record<TextField, string> = { company: "name", name: "title", title: "email", email: "phone", phone: "message" };
+const NEXT_FIELD: Record<TextField, TextField | "message"> = { company: "name", name: "title", title: "email", email: "phone", phone: "message" };
 
 /**
  * 상담 요청 양식.
